@@ -1,13 +1,14 @@
-const CACHE_NAME = 'dailyStreak-v1.0.0';
+const CACHE_NAME = 'dailyStreak-v2.0.0';
+
+// TOUS LES CHEMINS EN RELATIF (./) !
 const FILES_TO_CACHE = [
-  '/DailyStreak/',           // Important pour GitHub Pages
-  '/DailyStreak/index.html',
-  '/DailyStreak/style.css',
-  '/DailyStreak/app.js',
-  '/DailyStreak/pwa.js',
-  '/DailyStreak/manifest.json',
-  '/DailyStreak/icons/icon-192.png',
-  '/DailyStreak/icons/icon-512.png'
+  './index.html',
+  './style.css',
+  './app.js',
+  './pwa-install.js',              
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -50,6 +51,7 @@ self.addEventListener('fetch', (event) => {
     caches.match(event.request)
       .then((cachedResponse) => {
         if (cachedResponse) {
+          console.log('📦 Servi depuis cache:', event.request.url);
           return cachedResponse;
         }
         
@@ -59,20 +61,33 @@ self.addEventListener('fetch', (event) => {
               return response;
             }
             
+            // Cloner la réponse pour la mettre en cache
             const responseToCache = response.clone();
             caches.open(CACHE_NAME)
               .then((cache) => {
                 cache.put(event.request, responseToCache);
+                console.log('🌐 Mis en cache:', event.request.url);
               });
             
             return response;
           })
-          .catch(() => {
-            // Fallback pour la page d'accueil
+          .catch((error) => {
+            console.log('❌ Erreur fetch, fallback:', error);
+            
+            // Fallback pour la navigation
             if (event.request.mode === 'navigate') {
-              return caches.match('/DailyStreak/index.html');
+              return caches.match('./index.html');
             }
-            return null;
+            
+            // Fallback pour les icônes
+            if (event.request.url.includes('icon')) {
+              return caches.match('./icons/icon-192.png');
+            }
+            
+            return new Response('Application hors ligne', {
+              status: 503,
+              statusText: 'Service Unavailable'
+            });
           });
       })
   );
