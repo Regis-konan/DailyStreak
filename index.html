@@ -2,14 +2,36 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Titre et description -->
   <title>DailyStreak - Ne romps pas la chaîne</title>
-  <link rel="stylesheet" href="sty.css" />
+  <meta name="description" content="Suivez vos routines sportives quotidiennes. Ne romps pas la chaîne !" />
+  <meta name="keywords" content="sport, fitness, routine, habitude, streak, exercice" />
+  <meta name="author" content="Votre Nom" />
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />  <!-- ✅ CORRECT -->
+  
+  <!-- PWA Configuration -->
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  
+  <!-- Thème couleur (supporté par la plupart des navigateurs) -->
   <meta name="theme-color" content="#4F46E5" />
+  
+  <!-- iOS Safari PWA Configuration -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" /> <!-- ✅ AJOUTÉ -->
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="DailyStreak" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  
+  <!-- Favicon pour les navigateurs de bureau -->
+  <link rel="icon" type="image/png" href="icons/icon-192.png" />
+  
+  <!-- Pour éviter le message "theme-color non supporté" -->
+  <meta name="msapplication-TileColor" content="#4F46E5" />
+  <meta name="msapplication-tap-highlight" content="no" />
 </head>
 <body>
     <!-- Écran de chargement -->
@@ -58,7 +80,7 @@
         <!-- Contenu principal -->
         <main class="main">
             <!-- Écran d'accueil -->
-            <div id="homeScreen" class="screen active">
+            <div id="homeScreen" class="screen active">  <!-- ✅ BALISE DIV AJOUTÉE -->
                 <!-- Compteur de streak -->
                 <div class="streak-card">
                     <div class="streak-icon">
@@ -104,6 +126,41 @@
                     </div>
                 </div>
 
+                <!-- Timer -->
+                <div class="timer-card hidden" id="timerCard">
+                    <div class="card-header">
+                        <svg class="card-icon" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
+                        </svg>
+                        <h3>Timer</h3>
+                    </div>
+                    <div class="timer-display" id="timerDisplay">00:00</div>
+                    <div class="timer-exercise" id="timerExercise">Gainage</div>
+                    <div class="timer-controls">
+                        <button class="timer-btn play" onclick="startTimer()" aria-label="Démarrer le timer">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z"/>
+                            </svg>
+                        </button>
+                        <button class="timer-btn pause" onclick="pauseTimer()" aria-label="Mettre en pause le timer">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z"/>
+                            </svg>
+                        </button>
+                        <button class="timer-btn reset" onclick="resetTimer()" aria-label="Réinitialiser le timer">
+                            <svg viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="btn btn-small" onclick="hideTimer()">
+                        <svg viewBox="0 0 24 24" width="16" height="16">
+                            <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                        </svg>
+                        Fermer timer
+                    </button>
+                </div>
+
                 <!-- Mode réduit -->
                 <div class="tired-card hidden" id="tiredCard">
                     <div class="card-header">
@@ -141,41 +198,6 @@
                     </button>
                 </div>
 
-                <!-- Timer -->
-                <div class="timer-card hidden" id="timerCard">
-                    <div class="card-header">
-                        <svg class="card-icon" viewBox="0 0 24 24">
-                            <path fill="currentColor" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
-                        </svg>
-                        <h3>Timer</h3>
-                    </div>
-                    <div class="timer-display" id="timerDisplay">00:00</div>
-                    <div class="timer-exercise" id="timerExercise">Gainage</div>
-                    <div class="timer-controls">
-                        <button class="timer-btn play" onclick="startTimer()">
-                            <svg viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z"/>
-                            </svg>
-                        </button>
-                        <button class="timer-btn pause" onclick="pauseTimer()">
-                            <svg viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z"/>
-                            </svg>
-                        </button>
-                        <button class="timer-btn reset" onclick="resetTimer()">
-                            <svg viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <button class="btn btn-small" onclick="hideTimer()">
-                        <svg viewBox="0 0 24 24" width="16" height="16">
-                            <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
-                        </svg>
-                        Fermer timer
-                    </button>
-                </div>
-
                 <!-- Progression -->
                 <div class="progress-card">
                     <div class="card-header">
@@ -202,7 +224,7 @@
             <div id="statsScreen" class="screen">
                 <div class="stats-header">
                     <h2>Statistiques</h2>
-                    <button class="icon-btn" onclick="switchScreen('home')">
+                    <button class="icon-btn" onclick="switchScreen('home')" aria-label="Retour à l'accueil">
                         <svg viewBox="0 0 24 24">
                             <path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
                         </svg>
@@ -277,7 +299,7 @@
             <div id="settingsScreen" class="screen">
                 <div class="settings-header">
                     <h2>Paramètres</h2>
-                    <button class="icon-btn" onclick="switchScreen('home')">
+                    <button class="icon-btn" onclick="switchScreen('home')" aria-label="Retour à l'accueil">
                         <svg viewBox="0 0 24 24">
                             <path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
                         </svg>
@@ -407,6 +429,21 @@
         <div class="toast-container" id="toastContainer"></div>
     </div>
 
-    <script src="tp1.js"></script>
+    
+    <script src="app.js"></script>
+    <script src="pwa-install.js"></script>
+      <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js')
+          .then(function(registration) {
+            console.log('Service Worker enregistré avec succès:', registration.scope);
+          })
+          .catch(function(error) {
+            console.log('Échec d\'enregistrement du Service Worker:', error);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
