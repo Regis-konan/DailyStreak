@@ -92,11 +92,23 @@ function initApp() {
     setupServiceWorker();
     
     setTimeout(() => {
-        document.getElementById('loading').classList.add('hidden');
-        document.getElementById('app').style.display = 'flex';
-        showToast('Bienvenue sur DailyStreak !', 'success');
-        checkAndScheduleReminder();
-    }, 1000);
+    const loading = document.getElementById('loading');
+    const app = document.getElementById('app');
+    
+    if (loading) {
+        loading.classList.add('hidden');
+        setTimeout(() => {
+            loading.style.display = 'none';
+        }, 500);
+    }
+    
+    if (app) {
+        app.classList.add('show');
+    }
+    
+    showToast('Bienvenue sur DailyStreak !', 'success');
+    checkAndScheduleReminder();
+}, 1000);
 }
 
 function initUI() {
@@ -364,6 +376,8 @@ function updateDisplay() {
 
 function updateWeekChain() {
     const container = document.getElementById('weekChain');
+    if (!container) return;
+    
     container.innerHTML = '';
     
     const today = new Date();
