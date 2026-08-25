@@ -1,6 +1,6 @@
 // ============================================
 // DAILYSTREAK - APPLICATION COMPLÈTE
-// Version 4.0.0 - Design System Pro
+// Version 5.0.0 - Design System Pro
 // ============================================
 
 // Données de l'application
@@ -23,7 +23,7 @@ let appData = {
     settings: {
         theme: 'dark',
         level: 'beginner',
-        notifications: true,
+        notifications: false,
         reminderTime: '18:00',
         vibration: true
     },
@@ -74,9 +74,8 @@ const achievementsConfig = [
     { id: 6, name: "Journée parfaite", desc: "Tous les exercices faits", icon: "star", unlocked: false }
 ];
 
-// Notification ID pour le rappel quotidien
-let reminderNotificationId = null;
-let notificationCheckInterval = null;
+// Variable pour l'installation PWA
+let deferredPrompt = null;
 
 // ============================================
 // INITIALISATION
@@ -84,31 +83,13 @@ let notificationCheckInterval = null;
 
 window.addEventListener('DOMContentLoaded', () => {
     initApp();
+    setupInstallPrompt();
 });
 
 function initApp() {
     loadData();
     initUI();
     setupServiceWorker();
-    
-    setTimeout(() => {
-    const loading = document.getElementById('loading');
-    const app = document.getElementById('app');
-    
-    if (loading) {
-        loading.classList.add('hidden');
-        setTimeout(() => {
-            loading.style.display = 'none';
-        }, 500);
-    }
-    
-    if (app) {
-        app.classList.add('show');
-    }
-    
-    showToast('Bienvenue sur DailyStreak !', 'success');
-    checkAndScheduleReminder();
-}, 1000);
 }
 
 function initUI() {
@@ -181,10 +162,6 @@ function checkNewDay(savedData) {
             }
         }
         
-        if (appData.settings.notifications) {
-            showNewDayNotification();
-        }
-        
         saveData();
     }
 }
@@ -205,7 +182,7 @@ function createDefaultData() {
         settings: {
             theme: 'dark',
             level: 'beginner',
-            notifications: true,
+            notifications: false,
             reminderTime: '18:00',
             vibration: true
         },
@@ -244,6 +221,52 @@ function saveData() {
         console.error('Erreur de sauvegarde:', error);
         showToast('Erreur de sauvegarde', 'error');
     }
+}
+
+// ============================================
+// INSTALLATION PWA
+// ============================================
+
+function setupInstallPrompt() {
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallButton();
+    });
+    
+    window.addEventListener('appinstalled', () => {
+        deferredPrompt = null;
+        hideInstallButton();
+        showToast('Application installée !', 'success');
+    });
+}
+
+function showInstallButton() {
+    const installBtn = document.getElementById('installBtn');
+    if (installBtn) {
+        installBtn.classList.remove('hidden');
+    }
+}
+
+function hideInstallButton() {
+    const installBtn = document.getElementById('installBtn');
+    if (installBtn) {
+        installBtn.classList.add('hidden');
+    }
+}
+
+function installApp() {
+    if (!deferredPrompt) return;
+    
+    deferredPrompt.prompt();
+    
+    deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+            showToast('Installation en cours...', 'success');
+        }
+        deferredPrompt = null;
+        hideInstallButton();
+    });
 }
 
 // ============================================
@@ -799,7 +822,6 @@ function resetData() {
     playClickSound();
     if (confirm('Es-tu sûr de vouloir tout réinitialiser ?')) {
         if (confirm('Dernière chance ! Toutes tes données seront effacées.')) {
-            cancelDailyReminder();
             localStorage.clear();
             createDefaultData();
             loadExercises();
@@ -808,121 +830,6 @@ function resetData() {
             vibrate([200, 100, 200]);
         }
     }
-}
-
-// ============================================
-// NOTIFICATIONS
-// ============================================
-
-function checkAndScheduleReminder() {
-    if (!appData.settings.notifications) return;
-    
-    if (Notification.permission === 'granted') {
-        scheduleDailyReminder();
-    } else if (Notification.permission === 'default') {
-        requestNotificationPermission();
-    }
-}
-
-function requestNotificationPermission() {
-    if (!('Notification' in window)) {
-        showToast('Notifications non supportées', 'warning');
-        return;
-    }
-    
-    Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-            showToast('Notifications activées !', 'success');
-            scheduleDailyReminder();
-        } else if (permission === 'denied') {
-            showToast('Notifications refusées. Activez-les dans les paramètres.', 'warning');
-        }
-    });
-}
-
-function scheduleDailyReminder() {
-    cancelDailyReminder();
-    
-    if (!appData.settings.notifications || Notification.permission !== 'granted') {
-        return;
-    }
-    
-    const [hours, minutes] = appData.settings.reminderTime.split(':').map(Number);
-    const now = new Date();
-    const reminderTime = new Date();
-    
-    reminderTime.setHours(hours, minutes, 0, 0);
-    
-    if (reminderTime < now) {
-        reminderTime.setDate(reminderTime.getDate() + 1);
-    }
-    
-    const timeUntilReminder = reminderTime.getTime() - now.getTime();
-    
-    reminderNotificationId = setTimeout(() => {
-        if (!appData.todayCompleted) {
-            showReminderNotification();
-        }
-        scheduleDailyReminder();
-    }, timeUntilReminder);
-    
-    console.log('Rappel programmé à:', reminderTime.toLocaleTimeString());
-}
-
-function cancelDailyReminder() {
-    if (reminderNotificationId) {
-        clearTimeout(reminderNotificationId);
-        reminderNotificationId = null;
-    }
-}
-
-function showReminderNotification() {
-    if (!('Notification' in window) || Notification.permission !== 'granted') {
-        return;
-    }
-    
-    const options = {
-        body: 'N\'oublie pas ta routine sportive aujourd\'hui ! Ne romps pas la chaîne.',
-        icon: './icons/icon-192.png',
-        badge: './icons/icon-192.png',
-        tag: 'daily-reminder',
-        requireInteraction: true
-    };
-    
-    const notification = new Notification('DailyStreak - Rappel quotidien', options);
-    
-    notification.onclick = function(event) {
-        event.preventDefault();
-        window.focus();
-        notification.close();
-    };
-    
-    setTimeout(() => {
-        notification.close();
-    }, 10000);
-}
-
-function showNewDayNotification() {
-    if (!('Notification' in window) || Notification.permission !== 'granted') {
-        return;
-    }
-    
-    const notification = new Notification('Nouveau jour !', {
-        body: `Streak actuelle : ${appData.streak} jours. Fais ta routine aujourd'hui !`,
-        icon: './icons/icon-192.png',
-        badge: './icons/icon-192.png',
-        tag: 'new-day',
-        silent: true
-    });
-    
-    notification.onclick = function() {
-        window.focus();
-        this.close();
-    };
-    
-    setTimeout(() => {
-        notification.close();
-    }, 5000);
 }
 
 // ============================================
@@ -1130,7 +1037,6 @@ function setupEventListeners() {
     
     window.addEventListener('beforeunload', () => {
         saveData();
-        cancelDailyReminder();
     });
     
     const reminderTime = document.getElementById('reminderTime');
@@ -1140,7 +1046,6 @@ function setupEventListeners() {
         reminderTime.addEventListener('change', (e) => {
             appData.settings.reminderTime = e.target.value;
             saveData();
-            scheduleDailyReminder();
             showToast('Rappel enregistré', 'success');
         });
     }
@@ -1149,17 +1054,6 @@ function setupEventListeners() {
         notificationsToggle.addEventListener('change', (e) => {
             appData.settings.notifications = e.target.checked;
             saveData();
-            
-            if (e.target.checked) {
-                if (Notification.permission === 'granted') {
-                    scheduleDailyReminder();
-                } else if (Notification.permission === 'default') {
-                    requestNotificationPermission();
-                }
-            } else {
-                cancelDailyReminder();
-            }
-            
             showToast(`Notifications ${e.target.checked ? 'activées' : 'désactivées'}`, 'success');
         });
     }
