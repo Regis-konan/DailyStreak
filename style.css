@@ -1,6 +1,6 @@
 /* ============================================
-   DAILYSTREAK - DESIGN SYSTEM PROFESSIONNEL
-   Palette : Orange/Dark (Arounda Style)
+   DAILYSTREAK - DESIGN SYSTEM FINAL
+   Palette : Orange/Dark & Light (Arounda Style)
    ============================================ */
 
 /* ===== 1. TOKENS (DARK MODE PAR DÉFAUT) ===== */
@@ -16,7 +16,7 @@
   --bg-primary-rgb: 22, 19, 22;
   --bg-elevated: #1E1B1E;
   --bg-elevated-rgb: 30, 27, 30;
-  --bg-card: #453027;
+  --bg-card: #453027; /* Nouveau : brun foncé pour les cartes */
   --bg-card-rgb: 69, 48, 39;
   --bg-hover: #2A272A;
   --bg-input: #2A272A;
@@ -64,7 +64,6 @@
 
 /* ===== LIGHT MODE ===== */
 [data-theme="light"] {
-  /* Fond */
   --bg-primary: #F5F5F5;
   --bg-primary-rgb: 245, 245, 245;
   --bg-elevated: #FFFFFF;
@@ -73,15 +72,13 @@
   --bg-card-rgb: 255, 255, 255;
   --bg-hover: #E8E8E8;
   --bg-input: #F0F0F0;
-  
-  /* Texte */
+
   --text-primary: #161316;
   --text-primary-rgb: 22, 19, 22;
   --text-secondary: #666666;
   --text-secondary-rgb: 102, 102, 102;
   --text-tertiary: #999999;
-  
-  /* Effets */
+
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
@@ -98,6 +95,7 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease;
 }
 
 body {
@@ -107,7 +105,7 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   overscroll-behavior: none;
-  transition: background-color var(--transition-slow), color var(--transition-slow);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ===== 3. STRUCTURE PRINCIPALE ===== */
@@ -839,7 +837,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* ===== 18. LEVEL BUTTONS ===== */
+/* ===== 18. LEVEL BUTTONS (AMÉLIORÉ) ===== */
 .level-selector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -887,7 +885,7 @@ body {
   color: var(--primary);
 }
 
-/* ===== 19. THEME BUTTONS ===== */
+/* ===== 19. THEME BUTTONS (AMÉLIORÉ) ===== */
 .theme-selector {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -966,7 +964,7 @@ input:checked + .slider:before {
   transform: translateX(24px);
 }
 
-/* ===== 21. BOTTOM NAV MODERNE ===== */
+/* ===== 21. BOTTOM NAV (AMÉLIORÉE, SANS BORDER-LEFT) ===== */
 .bottom-nav {
   position: fixed;
   bottom: 20px;
@@ -976,7 +974,7 @@ input:checked + .slider:before {
   background: rgba(var(--bg-card-rgb), 0.95);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border-radius: 20px;
+  border-radius: 16px;
   padding: 6px;
   box-shadow: 
     0 4px 24px rgba(0, 0, 0, 0.3),
@@ -984,13 +982,13 @@ input:checked + .slider:before {
   border: 1px solid rgba(var(--text-primary-rgb), 0.1);
   width: auto;
   max-width: 90%;
-  transition: background-color var(--transition-slow), border-color var(--transition-slow);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .bottom-nav-container {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 
 .nav-item {
@@ -1002,13 +1000,14 @@ input:checked + .slider:before {
   padding: 10px 24px;
   background: transparent;
   border: none;
-  border-radius: 14px;
+  border-radius: 12px;
   color: var(--text-tertiary);
-  font-size: 0.7rem;
-  font-weight: 500;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 80px;
 }
 
 .nav-item:hover {
@@ -1040,11 +1039,9 @@ input:checked + .slider:before {
 
 .nav-label {
   font-size: 0.65rem;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  font-weight: 600;
 }
 
+/* Indicateur visuel (remplace le border-left) */
 .nav-item.active::after {
   content: '';
   position: absolute;
@@ -1058,7 +1055,7 @@ input:checked + .slider:before {
   box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.5);
 }
 
-/* ===== 22. TOAST ===== */
+/* ===== 22. TOAST (SANS BORDER-LEFT) ===== */
 .toast-container {
   position: fixed;
   top: 80px;
@@ -1087,22 +1084,16 @@ input:checked + .slider:before {
   color: var(--text-primary);
 }
 
-.toast.success {
-  border-left: 3px solid var(--success);
-}
-
-.toast.error {
-  border-left: 3px solid var(--danger);
-}
-
-/* ===== 23. APP ===== */
-.app {
-  min-height: 100vh;
+.toast-icon {
+  width: 20px;
+  height: 20px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-/* ===== 24. ANIMATIONS ===== */
+/* ===== 23. ANIMATIONS ===== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -1142,7 +1133,7 @@ input:checked + .slider:before {
   animation: slideUp 0.3s ease;
 }
 
-/* ===== 25. SCROLLBAR ===== */
+/* ===== 24. SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -1160,7 +1151,7 @@ input:checked + .slider:before {
   background: var(--bg-input);
 }
 
-/* ===== 26. UTILITAIRES ===== */
+/* ===== 25. UTILITAIRES ===== */
 .text-center {
   text-align: center;
 }
@@ -1209,7 +1200,7 @@ input:checked + .slider:before {
   display: none;
 }
 
-/* ===== 27. RESPONSIVE ===== */
+/* ===== 26. RESPONSIVE ===== */
 @media (min-width: 768px) {
   .main {
     max-width: 768px;
