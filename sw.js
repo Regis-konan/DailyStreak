@@ -1,7 +1,8 @@
-const CACHE_NAME = 'dailyStreak-v2.0.0';
+const CACHE_NAME = 'dailyStreak-v3.0.0';
 
 // TOUS LES CHEMINS EN RELATIF (./) !
 const FILES_TO_CACHE = [
+  './',
   './index.html',
   './style.css',
   './app.js',
@@ -12,12 +13,12 @@ const FILES_TO_CACHE = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('⚙️ Service Worker installé');
+  console.log('Service Worker installé');
   
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('📦 Mise en cache des ressources');
+        console.log('Mise en cache des ressources');
         return cache.addAll(FILES_TO_CACHE);
       })
       .then(() => self.skipWaiting())
@@ -25,7 +26,7 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('🚀 Service Worker activé');
+  console.log('Service Worker activé');
   
   event.waitUntil(
     Promise.all([
@@ -33,7 +34,7 @@ self.addEventListener('activate', (event) => {
         return Promise.all(
           cacheNames.map((cacheName) => {
             if (cacheName !== CACHE_NAME) {
-              console.log('🗑️ Suppression du cache:', cacheName);
+              console.log('Suppression du cache:', cacheName);
               return caches.delete(cacheName);
             }
           })
@@ -47,11 +48,11 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   
+  // Stratégie : cache d'abord, puis réseau
   event.respondWith(
     caches.match(event.request)
       .then((cachedResponse) => {
         if (cachedResponse) {
-          console.log('📦 Servi depuis cache:', event.request.url);
           return cachedResponse;
         }
         
@@ -66,13 +67,12 @@ self.addEventListener('fetch', (event) => {
             caches.open(CACHE_NAME)
               .then((cache) => {
                 cache.put(event.request, responseToCache);
-                console.log('🌐 Mis en cache:', event.request.url);
               });
             
             return response;
           })
           .catch((error) => {
-            console.log('❌ Erreur fetch, fallback:', error);
+            console.log('Erreur fetch, fallback:', error);
             
             // Fallback pour la navigation
             if (event.request.mode === 'navigate') {

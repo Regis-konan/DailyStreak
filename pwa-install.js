@@ -14,7 +14,7 @@ function createInstallButton() {
     // Créer le bouton
     const btn = document.createElement('button');
     btn.id = 'pwa-install-btn';
-    btn.innerHTML = '📱 Installer l\'app';
+    btn.innerHTML = 'Installer l\'app';
     btn.setAttribute('aria-label', 'Installer l\'application DailyStreak');
     
     // Ajouter au DOM d'abord
@@ -29,14 +29,14 @@ function createInstallButton() {
                 position: fixed;
                 bottom: 100px;
                 right: 20px;
-                background: #4F46E5;
+                background: #FF6D29;
                 color: white;
                 border: none;
                 padding: 12px 24px;
                 border-radius: 25px;
                 font-weight: bold;
                 cursor: pointer;
-                box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+                box-shadow: 0 4px 15px rgba(255, 109, 41, 0.4);
                 z-index: 10000;
                 display: none;
                 font-family: inherit;
@@ -44,15 +44,15 @@ function createInstallButton() {
                 transition: all 0.3s ease;
             }
             #pwa-install-btn:hover {
-                background: #4338CA;
+                background: #E55A1F;
                 transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+                box-shadow: 0 6px 20px rgba(255, 109, 41, 0.6);
             }
             #pwa-install-btn:active {
                 transform: translateY(0);
             }
             #pwa-install-btn:focus {
-                outline: 2px solid #4338CA;
+                outline: 2px solid #E55A1F;
                 outline-offset: 2px;
             }
         `;
@@ -75,12 +75,12 @@ function handleInstallClick() {
     // Attendre la réponse
     deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
-            console.log('✅ Utilisateur a accepté l\'installation');
+            console.log('Utilisateur a accepté l\'installation');
             if (installButton) {
                 installButton.style.display = 'none';
             }
         } else {
-            console.log('❌ Utilisateur a refusé l\'installation');
+            console.log('Utilisateur a refusé l\'installation');
         }
         
         deferredPrompt = null;
@@ -92,11 +92,11 @@ function showInstallInstructions() {
     
     const instructions = isMobile 
         ? 'Pour installer DailyStreak :\n\n' +
-          '1. Ouvrez le menu Chrome (⋮)\n' +
+          '1. Ouvrez le menu Chrome (...)\n' +
           '2. Sélectionnez "Ajouter à l\'écran d\'accueil"\n' +
           '3. Suivez les instructions'
         : 'Pour installer DailyStreak :\n\n' +
-          '1. Cliquez sur les 3 points ⋮ en haut à droite de Chrome\n' +
+          '1. Cliquez sur les 3 points (...) en haut à droite de Chrome\n' +
           '2. Sélectionnez "Installer DailyStreak"\n' +
           '3. Suivez les instructions';
     
@@ -112,7 +112,7 @@ function isRunningAsPWA() {
 
 // 4. Événements d'installation
 window.addEventListener('beforeinstallprompt', (e) => {
-    console.log('🎯 beforeinstallprompt déclenché');
+    console.log('beforeinstallprompt déclenché');
     e.preventDefault();
     deferredPrompt = e;
     
@@ -132,7 +132,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 window.addEventListener('appinstalled', (e) => {
-    console.log('✅ App installée avec succès');
+    console.log('App installée avec succès');
     deferredPrompt = null;
     
     if (installButton) {
@@ -149,11 +149,11 @@ window.addEventListener('appinstalled', (e) => {
 
 // 5. Initialisation au chargement
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Initialisation PWA');
+    console.log('Initialisation PWA');
     
     // Vérifier si déjà installée
     if (isRunningAsPWA()) {
-        console.log('📱 Application déjà installée');
+        console.log('Application déjà installée');
         return;
     }
     
@@ -164,16 +164,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
             .then(registration => {
-                console.log('✅ Service Worker enregistré avec succès');
+                console.log('Service Worker enregistré avec succès');
                 
                 // Vérifier les mises à jour
                 registration.addEventListener('updatefound', () => {
                     const newWorker = registration.installing;
-                    console.log('🔄 Nouveau Service Worker trouvé');
+                    console.log('Nouveau Service Worker trouvé');
                     
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('🔄 Nouvelle version disponible');
+                            console.log('Nouvelle version disponible');
                             if (document.getElementById('toastContainer')) {
                                 showToast('Nouvelle mise à jour disponible ! Rechargez la page.', 'info');
                             }
@@ -182,19 +182,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             })
             .catch(error => {
-                console.error('❌ Erreur Service Worker:', error);
+                console.error('Erreur Service Worker:', error);
             });
     } else {
-        console.log('❌ Service Worker non supporté');
+        console.log('Service Worker non supporté');
     }
     
     // Test : Afficher le bouton après 5 secondes pour démo
     setTimeout(() => {
         if (!deferredPrompt && installButton.style.display === 'none') {
-            console.log('🔄 Mode démo: affichage du bouton');
+            console.log('Mode démo: affichage du bouton');
             installButton.style.display = 'block';
-            installButton.innerHTML = '📱 TEST - Installer l\'app';
-            installButton.style.background = '#10B981';
+            installButton.innerHTML = 'Installer l\'app';
+            installButton.style.background = '#FF6D29';
             
             // Réassigner le clic pour les instructions
             installButton.onclick = showInstallInstructions;
@@ -206,6 +206,5 @@ document.addEventListener('DOMContentLoaded', () => {
 if (typeof showToast !== 'function') {
     function showToast(message, type = 'info') {
         console.log(`Toast [${type}]: ${message}`);
-        // Vous pouvez ajouter votre propre implémentation de toast ici
     }
 }
