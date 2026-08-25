@@ -91,10 +91,7 @@ let reminderNotificationId = null;
 // INITIALISATION
 // ============================================
 
-window.addEventListener('DOMContentLoaded', () => {
-    initApp();
-});
-
+// UNE SEULE initialisation !
 function initApp() {
     loadData();
     initUI();
@@ -1051,12 +1048,8 @@ function setupServiceWorker() {
 }
 
 // ============================================
-// LANCEMENT DE L'APPLICATION
+// LANCEMENT - UNE SEULE FOIS
 // ============================================
 
-// Initialisation immédiate
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initApp);
-} else {
-    initApp();
-}
+// Initialisation unique
+document.addEventListener('DOMContentLoaded', initApp);
