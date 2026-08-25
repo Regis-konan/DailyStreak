@@ -961,59 +961,66 @@ input:checked + .slider:before {
   transform: translateX(24px);
 }
 
-/* ===== 21. BOTTOM NAV (AVEC BOUTON CENTRAL) ===== */
+/* ===== 21. BOTTOM NAV (MODERN FLAT PILL STYLE) ===== */
 .bottom-nav {
   position: fixed;
-  bottom: calc(20px + var(--safe-area-bottom));
+  bottom: calc(20px + var(--safe-area-bottom)); /* Garde la marge par rapport au bas */
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
   background: rgba(var(--bg-card-rgb), 0.95);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border-radius: 30px;
-  padding: 8px;
+  border-radius: 28px; /* Plus arrondi */
+  padding: 10px 16px; /* Padding plus généreux */
   box-shadow: 
-    0 4px 24px rgba(0, 0, 0, 0.3),
-    0 1px 3px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(var(--text-primary-rgb), 0.1);
+    0 10px 30px rgba(0, 0, 0, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(var(--text-primary-rgb), 0.08);
   width: auto;
-  max-width: 90%;
+  max-width: 95%;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .bottom-nav-container {
   display: flex;
-  align-items: center;
-  gap: 4px;
+  align-items: flex-end; /* Aligne le bas des éléments */
+  gap: 8px;
+  height: 60px;
 }
 
+/* Style des icônes */
 .nav-item {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  padding: 10px 20px;
+  width: 64px; /* Largeur fixe pour uniformiser */
+  height: 56px;
   background: transparent;
   border: none;
-  border-radius: 12px;
+  border-radius: 16px;
   color: var(--text-tertiary);
   font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav-item:hover {
-  color: var(--text-primary);
-  background: rgba(var(--text-primary-rgb), 0.05);
+  color: var(--text-secondary);
+  background: rgba(var(--text-primary-rgb), 0.03);
 }
 
+/* Onglet actif : Effet Pill (Pastille surélevée) */
 .nav-item.active {
   color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.1);
+  font-weight: 700;
 }
 
 .nav-icon-wrapper {
@@ -1026,7 +1033,7 @@ input:checked + .slider:before {
 }
 
 .nav-item.active .nav-icon-wrapper {
-  transform: scale(1.1);
+  transform: translateY(-1px) scale(1.1);
 }
 
 .nav-icon {
@@ -1035,45 +1042,60 @@ input:checked + .slider:before {
 }
 
 .nav-label {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
+  line-height: 1;
+  white-space: nowrap;
 }
 
-/* Indicateur visuel (remplace le border-left) */
+/* Petite barre sous l'onglet actif */
 .nav-item.active::after {
   content: '';
   position: absolute;
-  bottom: 4px;
+  bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
   width: 4px;
   height: 4px;
   border-radius: 50%;
   background: var(--primary);
-  box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.5);
+  opacity: 0; /* Retiré au profit de l'effet pill */
 }
 
 /* ===== 22. BOUTON CENTRAL (VALIDER) ===== */
 .nav-center-btn {
-  width: 56px;
-  height: 56px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%); /* Dégradé premium */
   border: 4px solid var(--bg-primary);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.4);
-  transition: all var(--transition-base);
-  margin: -10px 0;
+  box-shadow: 
+    0 8px 20px rgba(var(--primary-rgb), 0.4),
+    0 2px 4px rgba(var(--primary-rgb), 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: -18px; /* Légère élévation sans casser l'alignement */
   position: relative;
   z-index: 10;
 }
 
+.nav-center-btn svg {
+  width: 28px;
+  height: 28px;
+}
+
 .nav-center-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.5);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 
+    0 12px 24px rgba(var(--primary-rgb), 0.5),
+    0 4px 8px rgba(var(--primary-rgb), 0.3);
+}
+
+.nav-center-btn:active {
+  transform: translateY(0) scale(0.95);
 }
 
 /* ===== 23. TOAST ===== */
