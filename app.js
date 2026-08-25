@@ -1132,8 +1132,38 @@ function setupServiceWorker() {
 }
 
 // ============================================
-// LANCEMENT - UNE SEULE FOIS
+// LANCEMENT DE L'APPLICATION
 // ============================================
 
-// Initialisation unique
-document.addEventListener('DOMContentLoaded', initApp);
+let appInitialized = false;
+
+function startApp() {
+    if (appInitialized) return;
+    appInitialized = true;
+
+    try {
+        initApp();
+    } catch (error) {
+        console.error('❌ Erreur pendant l’initialisation de DailyStreak :', error);
+
+        // Éviter de laisser l'écran de chargement bloqué
+        const loading = document.getElementById('loading');
+        const app = document.getElementById('app');
+
+        if (loading) {
+            loading.classList.add('hidden');
+        }
+
+        if (app) {
+            app.style.display = 'flex';
+        }
+    }
+}
+
+// Si le DOM n'est pas encore prêt, on attend.
+// Sinon, on initialise immédiatement.
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startApp, { once: true });
+} else {
+    startApp();
+}
