@@ -126,78 +126,6 @@
                     </div>
                 </div>
 
-                <!-- Timer -->
-                <div class="timer-card hidden" id="timerCard">
-                    <div class="card-header">
-                        <svg class="card-icon" viewBox="0 0 24 24" width="20" height="20">
-                            <path fill="currentColor" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
-                        </svg>
-                        <h3>Timer</h3>
-                    </div>
-                    <div class="timer-display" id="timerDisplay">00:00</div>
-                    <div class="timer-exercise" id="timerExercise">Gainage</div>
-                    <div class="timer-controls">
-                        <button class="timer-btn play" onclick="startTimer()" aria-label="Démarrer le timer">
-                            <svg viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z"/>
-                            </svg>
-                        </button>
-                        <button class="timer-btn pause" onclick="pauseTimer()" aria-label="Mettre en pause le timer">
-                            <svg viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z"/>
-                            </svg>
-                        </button>
-                        <button class="timer-btn reset" onclick="resetTimer()" aria-label="Réinitialiser le timer">
-                            <svg viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="currentColor" d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <button class="btn btn-small" onclick="hideTimer()">
-                        <svg viewBox="0 0 24 24" width="16" height="16">
-                            <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
-                        </svg>
-                        Fermer timer
-                    </button>
-                </div>
-
-                <!-- Mode réduit -->
-                <div class="tired-card hidden" id="tiredCard">
-                    <div class="card-header">
-                        <svg class="card-icon" viewBox="0 0 24 24" width="20" height="20">
-                            <path fill="currentColor" d="M23,12C23,18.08 18.08,23 12,23C5.92,23 1,18.08 1,12C1,5.92 5.92,1 12,1C18.08,1 23,5.92 23,12Z"/>
-                        </svg>
-                        <h3>Mode Réduit</h3>
-                    </div>
-                    <p>Pas le temps ? Fais juste l'essentiel :</p>
-                    <div class="tired-exercises">
-                        <button class="tired-btn" onclick="completeTired('plank')">
-                            <svg class="tired-icon" viewBox="0 0 24 24" width="20" height="20">
-                                <path fill="currentColor" d="M20,8H4V6H20M20,18H4V12H20M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z"/>
-                            </svg>
-                            <div>
-                                <span>Gainage sol</span>
-                                <small>20 secondes</small>
-                            </div>
-                        </button>
-                        <button class="tired-btn" onclick="completeTired('squats')">
-                            <svg class="tired-icon" viewBox="0 0 24 24" width="20" height="20">
-                                <path fill="currentColor" d="M21,6H3V8H21V6M19,10H5V12H19V10M17,14H7V16H17V14M15,18H9V20H15V18Z"/>
-                            </svg>
-                            <div>
-                                <span>Squats légers</span>
-                                <small>5 répétitions</small>
-                            </div>
-                        </button>
-                    </div>
-                    <button class="btn btn-small" onclick="toggleTiredMode()">
-                        <svg viewBox="0 0 24 24" width="16" height="16">
-                            <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
-                        </svg>
-                        Fermer
-                    </button>
-                </div>
-
                 <!-- Progression -->
                 <div class="progress-card">
                     <div class="card-header">
@@ -310,6 +238,26 @@
                     <div class="setting-group">
                         <h3>
                             <svg viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor" d="M10,21H14A2,2 0 0,1 12,23A2,2 0 0,1 10,21M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M17,11A5,5 0 0,0 12,6A5,5 0 0,0 7,11V18H17V11M19.75,3.19L18.33,4.61C20.04,6.3 21,8.6 21,11H23C23,8.07 21.84,5.25 19.75,3.19M1,11H3C3,8.6 3.96,6.3 5.67,4.61L4.25,3.19C2.16,5.25 1,8.07 1,11Z"/>
+                            </svg>
+                            Notifications
+                        </h3>
+                        <div class="setting">
+                            <label for="reminderTime">Rappel quotidien</label>
+                            <input type="time" id="reminderTime" value="18:00">
+                        </div>
+                        <div class="setting">
+                            <label for="notificationsToggle">Activer les notifications</label>
+                            <label class="switch">
+                                <input type="checkbox" id="notificationsToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <h3>
+                            <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
                             </svg>
                             Niveau
@@ -409,6 +357,38 @@
                 </button>
             </div>
         </nav>
+
+        <!-- Modal Timer -->
+        <div class="modal-overlay" id="timerModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTimerExercise">Gainage</h3>
+                    <button class="modal-close" onclick="closeTimerModal()" aria-label="Fermer">
+                        <svg viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="modal-timer-display" id="modalTimerDisplay">00:00</div>
+                <div class="modal-timer-controls">
+                    <button class="modal-timer-btn play" onclick="startModalTimer()" aria-label="Démarrer">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z"/>
+                        </svg>
+                    </button>
+                    <button class="modal-timer-btn pause" onclick="pauseModalTimer()" aria-label="Pause">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z"/>
+                        </svg>
+                    </button>
+                    <button class="modal-timer-btn reset" onclick="resetModalTimer()" aria-label="Réinitialiser">
+                        <svg viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
 
         <!-- Messages toast -->
         <div class="toast-container" id="toastContainer"></div>

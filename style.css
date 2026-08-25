@@ -1,5 +1,5 @@
 /* ============================================
-   DAILYSTREAK - DESIGN SYSTEM FINAL CORRIGÉ
+   DAILYSTREAK - DESIGN SYSTEM FINAL
    Palette : Orange/Dark & Light (Arounda Style)
    ============================================ */
 
@@ -110,10 +110,11 @@ body {
   flex-direction: column;
 }
 
+/* IMPORTANT : padding-bottom plus grand pour la nav */
 .main {
   flex: 1;
   padding: var(--spacing-md);
-  padding-bottom: calc(100px + var(--safe-area-bottom));
+  padding-bottom: calc(140px + var(--safe-area-bottom)); /* Espace pour la nav + bouton central */
   max-width: 768px;
   margin: 0 auto;
   width: 100%;
@@ -203,7 +204,7 @@ body {
   background: rgba(var(--primary-rgb), 0.1);
 }
 
-/* ===== 5. ÉCRANS ===== */
+/* ===== 5. ÉCRANS (TRANSITIONS) ===== */
 .screen {
   display: none;
   animation: fadeIn 0.3s ease;
@@ -211,6 +212,7 @@ body {
 
 .screen.active {
   display: block;
+  animation: slideUp 0.3s ease;
 }
 
 .screen-header {
@@ -830,7 +832,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* ===== 18. LEVEL BUTTONS (CORRIGÉ) ===== */
+/* ===== 18. LEVEL BUTTONS ===== */
 .level-selector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1112,7 +1114,135 @@ input:checked + .slider:before {
   flex-shrink: 0;
 }
 
-/* ===== 24. ANIMATIONS ===== */
+/* ===== 24. MODAL TIMER ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  max-width: 400px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.modal-close {
+  background: var(--bg-hover);
+  border: none;
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.modal-close:hover {
+  background: var(--bg-input);
+  color: var(--text-primary);
+}
+
+.modal-timer-display {
+  font-size: 4rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--text-primary);
+  margin: var(--spacing-lg) 0;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 2px;
+}
+
+.modal-timer-exercise {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal-timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.modal-timer-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.modal-timer-btn:hover {
+  transform: scale(1.1);
+}
+
+.modal-timer-btn.play {
+  background: var(--primary);
+  color: white;
+  width: 72px;
+  height: 72px;
+  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.4);
+}
+
+.modal-timer-btn.pause {
+  background: var(--bg-hover);
+}
+
+.modal-timer-btn.reset {
+  background: var(--bg-hover);
+}
+
+/* ===== 25. ANIMATIONS ===== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -1152,7 +1282,7 @@ input:checked + .slider:before {
   animation: slideUp 0.3s ease;
 }
 
-/* ===== 25. SCROLLBAR ===== */
+/* ===== 26. SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -1170,7 +1300,7 @@ input:checked + .slider:before {
   background: var(--bg-input);
 }
 
-/* ===== 26. UTILITAIRES ===== */
+/* ===== 27. UTILITAIRES ===== */
 .text-center {
   text-align: center;
 }
@@ -1219,7 +1349,7 @@ input:checked + .slider:before {
   display: none;
 }
 
-/* ===== 27. RESPONSIVE ===== */
+/* ===== 28. RESPONSIVE ===== */
 @media (min-width: 768px) {
   .main {
     max-width: 768px;

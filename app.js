@@ -1,6 +1,6 @@
 // ============================================
 // DAILYSTREAK - APPLICATION COMPLÈTE
-// Version 7.0.0 - Design System Pro
+// Version 8.0.0 - Design System Pro + Modal Timer
 // ============================================
 
 // Données de l'application
@@ -315,7 +315,7 @@ function renderExercises() {
                     <div class="exercise-duration">${exercise.duration}</div>
                 </div>
             </div>
-            <button class="exercise-timer" onclick="startExerciseTimer(${exercise.id})" aria-label="Démarrer le timer pour ${exercise.name}">
+            <button class="exercise-timer" onclick="openTimerModal(${exercise.id})" aria-label="Démarrer le timer pour ${exercise.name}">
                 <svg viewBox="0 0 24 24" width="20" height="20">
                     <path fill="currentColor" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
                 </svg>
@@ -620,38 +620,60 @@ function completeTired(type) {
 }
 
 // ============================================
-// TIMER
+// MODAL TIMER
 // ============================================
 
-function startExerciseTimer(exerciseId) {
+function openTimerModal(exerciseId) {
     const exercise = appData.exercises.find(ex => ex.id === exerciseId);
     if (!exercise) return;
     
     playClickSound();
     
-    const timerCard = document.getElementById('timerCard');
-    timerCard.classList.remove('hidden');
-    document.getElementById('timerExercise').textContent = exercise.name;
+    const modal = document.getElementById('timerModal');
+    const modalExercise = document.getElementById('modalTimerExercise');
+    const modalDisplay = document.getElementById('modalTimerDisplay');
     
-    appData.timer.seconds = 0;
-    appData.timer.totalSeconds = exercise.time;
-    appData.timer.exercise = exercise.name;
-    
-    updateTimerDisplay();
+    if (modal && modalExercise && modalDisplay) {
+        modalExercise.textContent = exercise.name;
+        modalDisplay.textContent = '00:00';
+        
+        appData.timer.seconds = 0;
+        appData.timer.totalSeconds = exercise.time;
+        appData.timer.exercise = exercise.name;
+        appData.timer.running = false;
+        
+        if (appData.timer.interval) {
+            clearInterval(appData.timer.interval);
+            appData.timer.interval = null;
+        }
+        
+        modal.classList.add('active');
+    }
 }
 
-function startTimer() {
+function closeTimerModal() {
+    const modal = document.getElementById('timerModal');
+    if (modal) {
+        modal.classList.remove('active');
+        resetModalTimer();
+    }
+}
+
+function startModalTimer() {
     if (appData.timer.running) return;
     
     playClickSound();
     appData.timer.running = true;
+    
     appData.timer.interval = setInterval(() => {
         appData.timer.seconds++;
-        updateTimerDisplay();
+        updateModalTimerDisplay();
         
         if (appData.timer.seconds >= appData.timer.totalSeconds) {
             clearInterval(appData.timer.interval);
+            appData.timer.interval = null;
             appData.timer.running = false;
+            
             showToast(`${appData.timer.exercise} terminé !`, 'success');
             playSuccessSound();
             vibrate([200, 100, 200]);
@@ -660,36 +682,36 @@ function startTimer() {
             if (exercise && !exercise.completed) {
                 toggleExercise(exercise.id);
             }
+            
+            closeTimerModal();
         }
     }, 1000);
 }
 
-function pauseTimer() {
+function pauseModalTimer() {
     if (!appData.timer.running) return;
     
     playClickSound();
     clearInterval(appData.timer.interval);
+    appData.timer.interval = null;
     appData.timer.running = false;
 }
 
-function resetTimer() {
-    playClickSound();
-    pauseTimer();
+function resetModalTimer() {
+    clearInterval(appData.timer.interval);
+    appData.timer.interval = null;
+    appData.timer.running = false;
     appData.timer.seconds = 0;
-    updateTimerDisplay();
+    updateModalTimerDisplay();
 }
 
-function hideTimer() {
-    playClickSound();
-    document.getElementById('timerCard').classList.add('hidden');
-    resetTimer();
-}
-
-function updateTimerDisplay() {
-    const minutes = Math.floor(appData.timer.seconds / 60);
-    const seconds = appData.timer.seconds % 60;
-    document.getElementById('timerDisplay').textContent = 
-        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+function updateModalTimerDisplay() {
+    const modalDisplay = document.getElementById('modalTimerDisplay');
+    if (modalDisplay) {
+        const minutes = Math.floor(appData.timer.seconds / 60);
+        const seconds = appData.timer.seconds % 60;
+        modalDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
 }
 
 // ============================================
@@ -830,7 +852,7 @@ function setupAccessibility() {
 }
 
 function updateAriaLabels() {
-    const timerButtons = document.querySelectorAll('.timer-btn');
+    const timerButtons = document.querySelectorAll('.modal-timer-btn');
     if (timerButtons.length >= 3) {
         timerButtons[0].setAttribute('aria-label', 'Démarrer le timer');
         timerButtons[1].setAttribute('aria-label', 'Mettre en pause le timer');
@@ -870,14 +892,9 @@ function updateAriaLabels() {
 
 function handleKeyboardNavigation(e) {
     if (e.key === 'Escape') {
-        const timerCard = document.getElementById('timerCard');
-        if (!timerCard.classList.contains('hidden')) {
-            hideTimer();
-        }
-        
-        const tiredCard = document.getElementById('tiredCard');
-        if (!tiredCard.classList.contains('hidden')) {
-            toggleTiredMode();
+        const modal = document.getElementById('timerModal');
+        if (modal && modal.classList.contains('active')) {
+            closeTimerModal();
         }
     }
     
@@ -1023,6 +1040,25 @@ function setupEventListeners() {
     window.addEventListener('beforeunload', () => {
         saveData();
     });
+    
+    const reminderTime = document.getElementById('reminderTime');
+    const notificationsToggle = document.getElementById('notificationsToggle');
+    
+    if (reminderTime) {
+        reminderTime.addEventListener('change', (e) => {
+            appData.settings.reminderTime = e.target.value;
+            saveData();
+            showToast('Rappel enregistré', 'success');
+        });
+    }
+    
+    if (notificationsToggle) {
+        notificationsToggle.addEventListener('change', (e) => {
+            appData.settings.notifications = e.target.checked;
+            saveData();
+            showToast(`Notifications ${e.target.checked ? 'activées' : 'désactivées'}`, 'success');
+        });
+    }
 }
 
 function setupServiceWorker() {
