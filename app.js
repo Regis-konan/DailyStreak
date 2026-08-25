@@ -1,6 +1,6 @@
 // ============================================
 // DAILYSTREAK - APPLICATION COMPLÈTE
-// Version 8.0.0 - Design System Pro + Modal Timer
+// Version 9.0.0 - Design System Pro Sans Bouton Central
 // ============================================
 
 // Données de l'application
@@ -852,13 +852,6 @@ function setupAccessibility() {
 }
 
 function updateAriaLabels() {
-    const timerButtons = document.querySelectorAll('.modal-timer-btn');
-    if (timerButtons.length >= 3) {
-        timerButtons[0].setAttribute('aria-label', 'Démarrer le timer');
-        timerButtons[1].setAttribute('aria-label', 'Mettre en pause le timer');
-        timerButtons[2].setAttribute('aria-label', 'Réinitialiser le timer');
-    }
-    
     const navButtons = document.querySelectorAll('.nav-item');
     navButtons.forEach((btn, index) => {
         const labels = ['Accueil', 'Statistiques', 'Paramètres'];

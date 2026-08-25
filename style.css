@@ -114,7 +114,7 @@ body {
 .main {
   flex: 1;
   padding: var(--spacing-md);
-  padding-bottom: calc(140px + var(--safe-area-bottom)); /* Espace pour la nav + bouton central */
+  padding-bottom: calc(100px + var(--safe-area-bottom)); /* Espace pour la nav */
   max-width: 768px;
   margin: 0 auto;
   width: 100%;
@@ -961,18 +961,18 @@ input:checked + .slider:before {
   transform: translateX(24px);
 }
 
-/* ===== 21. BOTTOM NAV (MODERN FLAT PILL STYLE) ===== */
+/* ===== 21. BOTTOM NAV (MODERN FLAT PILL STYLE - SANS BOUTON CENTRAL) ===== */
 .bottom-nav {
   position: fixed;
-  bottom: calc(20px + var(--safe-area-bottom)); /* Garde la marge par rapport au bas */
+  bottom: calc(15px + var(--safe-area-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  background: rgba(var(--bg-card-rgb), 0.95);
+  background: rgba(var(--bg-card-rgb), 0.92);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border-radius: 28px; /* Plus arrondi */
-  padding: 10px 16px; /* Padding plus généreux */
+  border-radius: 24px;
+  padding: 10px;
   box-shadow: 
     0 10px 30px rgba(0, 0, 0, 0.25),
     0 2px 8px rgba(0, 0, 0, 0.1);
@@ -984,26 +984,27 @@ input:checked + .slider:before {
 
 .bottom-nav-container {
   display: flex;
-  align-items: flex-end; /* Aligne le bas des éléments */
-  gap: 8px;
-  height: 60px;
+  align-items: center;
+  justify-content: space-around;
+  gap: 6px;
+  height: 52px;
 }
 
-/* Style des icônes */
+/* Style des onglets */
 .nav-item {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  width: 64px; /* Largeur fixe pour uniformiser */
-  height: 56px;
+  gap: 3px;
+  width: 72px;
+  height: 48px;
   background: transparent;
   border: none;
-  border-radius: 16px;
+  border-radius: 14px;
   color: var(--text-tertiary);
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1019,8 +1020,9 @@ input:checked + .slider:before {
 /* Onglet actif : Effet Pill (Pastille surélevée) */
 .nav-item.active {
   color: var(--primary);
-  background: rgba(var(--primary-rgb), 0.1);
+  background: rgba(var(--primary-rgb), 0.12);
   font-weight: 700;
+  transform: translateY(-2px);
 }
 
 .nav-icon-wrapper {
@@ -1051,54 +1053,17 @@ input:checked + .slider:before {
 .nav-item.active::after {
   content: '';
   position: absolute;
-  bottom: 8px;
+  bottom: 6px;
   left: 50%;
   transform: translateX(-50%);
   width: 4px;
   height: 4px;
   border-radius: 50%;
   background: var(--primary);
-  opacity: 0; /* Retiré au profit de l'effet pill */
+  box-shadow: 0 2px 6px rgba(var(--primary-rgb), 0.4);
 }
 
-/* ===== 22. BOUTON CENTRAL (VALIDER) ===== */
-.nav-center-btn {
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%); /* Dégradé premium */
-  border: 4px solid var(--bg-primary);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 
-    0 8px 20px rgba(var(--primary-rgb), 0.4),
-    0 2px 4px rgba(var(--primary-rgb), 0.2);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-top: -18px; /* Légère élévation sans casser l'alignement */
-  position: relative;
-  z-index: 10;
-}
-
-.nav-center-btn svg {
-  width: 28px;
-  height: 28px;
-}
-
-.nav-center-btn:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 
-    0 12px 24px rgba(var(--primary-rgb), 0.5),
-    0 4px 8px rgba(var(--primary-rgb), 0.3);
-}
-
-.nav-center-btn:active {
-  transform: translateY(0) scale(0.95);
-}
-
-/* ===== 23. TOAST ===== */
+/* ===== 22. TOAST ===== */
 .toast-container {
   position: fixed;
   top: calc(80px + var(--safe-area-top));
@@ -1136,7 +1101,7 @@ input:checked + .slider:before {
   flex-shrink: 0;
 }
 
-/* ===== 24. MODAL TIMER ===== */
+/* ===== 23. MODAL TIMER ===== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -1264,7 +1229,7 @@ input:checked + .slider:before {
   background: var(--bg-hover);
 }
 
-/* ===== 25. ANIMATIONS ===== */
+/* ===== 24. ANIMATIONS ===== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -1304,7 +1269,7 @@ input:checked + .slider:before {
   animation: slideUp 0.3s ease;
 }
 
-/* ===== 26. SCROLLBAR ===== */
+/* ===== 25. SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -1322,7 +1287,7 @@ input:checked + .slider:before {
   background: var(--bg-input);
 }
 
-/* ===== 27. UTILITAIRES ===== */
+/* ===== 26. UTILITAIRES ===== */
 .text-center {
   text-align: center;
 }
@@ -1371,7 +1336,7 @@ input:checked + .slider:before {
   display: none;
 }
 
-/* ===== 28. RESPONSIVE ===== */
+/* ===== 27. RESPONSIVE ===== */
 @media (min-width: 768px) {
   .main {
     max-width: 768px;
@@ -1438,14 +1403,6 @@ input:checked + .slider:before {
     right: 10px;
     left: auto;
     transform: translateX(0);
-  }
-  
-  .nav-center-btn {
-    width: 100%;
-    height: 48px;
-    border-radius: var(--radius-md);
-    margin: var(--spacing-sm) 0;
-    border: none;
   }
   
   .main {
