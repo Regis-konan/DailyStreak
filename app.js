@@ -1,6 +1,6 @@
 // ============================================
 // DAILYSTREAK - APPLICATION COMPLÈTE
-// Version 5.0.0 - Design System Pro
+// Version 7.0.0 - Design System Pro
 // ============================================
 
 // Données de l'application
@@ -803,21 +803,6 @@ function setLevel(level) {
     showToast(`Niveau ${level} activé`, 'success');
 }
 
-function exportData() {
-    playClickSound();
-    const dataStr = JSON.stringify(appData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = `daily-streak-backup-${new Date().toISOString().split('T')[0]}.json`;
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-    
-    showToast('Données exportées', 'success');
-}
-
 function resetData() {
     playClickSound();
     if (confirm('Es-tu sûr de vouloir tout réinitialiser ?')) {
@@ -1038,25 +1023,6 @@ function setupEventListeners() {
     window.addEventListener('beforeunload', () => {
         saveData();
     });
-    
-    const reminderTime = document.getElementById('reminderTime');
-    const notificationsToggle = document.getElementById('notificationsToggle');
-    
-    if (reminderTime) {
-        reminderTime.addEventListener('change', (e) => {
-            appData.settings.reminderTime = e.target.value;
-            saveData();
-            showToast('Rappel enregistré', 'success');
-        });
-    }
-    
-    if (notificationsToggle) {
-        notificationsToggle.addEventListener('change', (e) => {
-            appData.settings.notifications = e.target.checked;
-            saveData();
-            showToast(`Notifications ${e.target.checked ? 'activées' : 'désactivées'}`, 'success');
-        });
-    }
 }
 
 function setupServiceWorker() {

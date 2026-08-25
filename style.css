@@ -1,34 +1,30 @@
 /* ============================================
-   DAILYSTREAK - DESIGN SYSTEM FINAL
+   DAILYSTREAK - DESIGN SYSTEM FINAL CORRIGÉ
    Palette : Orange/Dark & Light (Arounda Style)
    ============================================ */
 
 /* ===== 1. TOKENS (DARK MODE PAR DÉFAUT) ===== */
 :root {
-  /* Couleurs principales */
   --primary: #FF6D29;
   --primary-light: #FF8C5F;
   --primary-dark: #E55A1F;
   --primary-rgb: 255, 109, 41;
   
-  /* Fond */
   --bg-primary: #161316;
   --bg-primary-rgb: 22, 19, 22;
   --bg-elevated: #1E1B1E;
   --bg-elevated-rgb: 30, 27, 30;
-  --bg-card: #453027; /* Nouveau : brun foncé pour les cartes */
-  --bg-card-rgb: 69, 48, 39;
-  --bg-hover: #2A272A;
-  --bg-input: #2A272A;
+  --bg-card: #2A272A;
+  --bg-card-rgb: 42, 39, 42;
+  --bg-hover: #3A373A;
+  --bg-input: #3A373A;
   
-  /* Texte */
   --text-primary: #FFFFFF;
   --text-secondary: #BABABA;
   --text-tertiary: #8A8A8A;
   --text-primary-rgb: 255, 255, 255;
   --text-secondary-rgb: 186, 186, 186;
   
-  /* Sémantique */
   --success: #4ADE80;
   --success-rgb: 74, 222, 128;
   --danger: #EF4444;
@@ -36,30 +32,29 @@
   --warning: #F59E0B;
   --warning-rgb: 245, 158, 11;
   
-  /* Effets */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
   
-  /* Rayons */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-full: 9999px;
   
-  /* Transitions */
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --transition-slow: 350ms ease;
   
-  /* Espacements */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
+  
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* ===== LIGHT MODE ===== */
@@ -106,9 +101,9 @@ body {
   min-height: 100vh;
   overscroll-behavior: none;
   transition: background-color 0.3s ease, color 0.3s ease;
+  padding-top: var(--safe-area-top);
 }
 
-/* ===== 3. STRUCTURE PRINCIPALE ===== */
 .app {
   min-height: 100vh;
   display: flex;
@@ -118,13 +113,13 @@ body {
 .main {
   flex: 1;
   padding: var(--spacing-md);
-  padding-bottom: 100px;
+  padding-bottom: calc(100px + var(--safe-area-bottom));
   max-width: 768px;
   margin: 0 auto;
   width: 100%;
 }
 
-/* ===== 4. HEADER ===== */
+/* ===== 3. HEADER ===== */
 .header {
   position: sticky;
   top: 0;
@@ -133,7 +128,7 @@ body {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(var(--text-primary-rgb), 0.05);
-  padding: var(--spacing-md) 0;
+  padding: calc(var(--spacing-md) + var(--safe-area-top)) 0 var(--spacing-md);
 }
 
 .header-content {
@@ -340,10 +335,6 @@ body {
   border: 1px solid rgba(var(--success-rgb), 0.2);
 }
 
-.exercise-item:last-child {
-  border-bottom: none;
-}
-
 .exercise-content {
   display: flex;
   align-items: center;
@@ -449,6 +440,8 @@ body {
   background: rgba(var(--danger-rgb), 0.1);
   color: var(--danger);
   border: 1px solid rgba(var(--danger-rgb), 0.2);
+  width: 100%;
+  margin-top: var(--spacing-sm);
 }
 
 .btn-danger:hover {
@@ -837,7 +830,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* ===== 18. LEVEL BUTTONS (AMÉLIORÉ) ===== */
+/* ===== 18. LEVEL BUTTONS (CORRIGÉ) ===== */
 .level-selector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -849,24 +842,26 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px 16px;
+  padding: 16px 8px;
   background: var(--bg-hover);
   border: 2px solid transparent;
   border-radius: var(--radius-md);
   color: var(--text-secondary);
   cursor: pointer;
   transition: all var(--transition-base);
-  min-height: 90px;
+  min-height: 80px;
+  text-align: center;
 }
 
 .level-btn span {
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   margin-bottom: 4px;
+  white-space: nowrap;
 }
 
 .level-btn small {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-tertiary);
 }
 
@@ -885,7 +880,7 @@ body {
   color: var(--primary);
 }
 
-/* ===== 19. THEME BUTTONS (AMÉLIORÉ) ===== */
+/* ===== 19. THEME BUTTONS ===== */
 .theme-selector {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -964,18 +959,18 @@ input:checked + .slider:before {
   transform: translateX(24px);
 }
 
-/* ===== 21. BOTTOM NAV (AMÉLIORÉE, SANS BORDER-LEFT) ===== */
+/* ===== 21. BOTTOM NAV (AVEC BOUTON CENTRAL) ===== */
 .bottom-nav {
   position: fixed;
-  bottom: 20px;
+  bottom: calc(20px + var(--safe-area-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
   background: rgba(var(--bg-card-rgb), 0.95);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  border-radius: 16px;
-  padding: 6px;
+  border-radius: 30px;
+  padding: 8px;
   box-shadow: 
     0 4px 24px rgba(0, 0, 0, 0.3),
     0 1px 3px rgba(0, 0, 0, 0.2);
@@ -997,7 +992,7 @@ input:checked + .slider:before {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  padding: 10px 24px;
+  padding: 10px 20px;
   background: transparent;
   border: none;
   border-radius: 12px;
@@ -1055,10 +1050,34 @@ input:checked + .slider:before {
   box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.5);
 }
 
-/* ===== 22. TOAST (SANS BORDER-LEFT) ===== */
+/* ===== 22. BOUTON CENTRAL (VALIDER) ===== */
+.nav-center-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 4px solid var(--bg-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.4);
+  transition: all var(--transition-base);
+  margin: -10px 0;
+  position: relative;
+  z-index: 10;
+}
+
+.nav-center-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.5);
+}
+
+/* ===== 23. TOAST ===== */
 .toast-container {
   position: fixed;
-  top: 80px;
+  top: calc(80px + var(--safe-area-top));
   left: 50%;
   transform: translateX(-50%);
   z-index: 2000;
@@ -1093,7 +1112,7 @@ input:checked + .slider:before {
   flex-shrink: 0;
 }
 
-/* ===== 23. ANIMATIONS ===== */
+/* ===== 24. ANIMATIONS ===== */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -1133,7 +1152,7 @@ input:checked + .slider:before {
   animation: slideUp 0.3s ease;
 }
 
-/* ===== 24. SCROLLBAR ===== */
+/* ===== 25. SCROLLBAR ===== */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -1151,7 +1170,7 @@ input:checked + .slider:before {
   background: var(--bg-input);
 }
 
-/* ===== 25. UTILITAIRES ===== */
+/* ===== 26. UTILITAIRES ===== */
 .text-center {
   text-align: center;
 }
@@ -1200,7 +1219,7 @@ input:checked + .slider:before {
   display: none;
 }
 
-/* ===== 26. RESPONSIVE ===== */
+/* ===== 27. RESPONSIVE ===== */
 @media (min-width: 768px) {
   .main {
     max-width: 768px;
@@ -1267,6 +1286,14 @@ input:checked + .slider:before {
     right: 10px;
     left: auto;
     transform: translateX(0);
+  }
+  
+  .nav-center-btn {
+    width: 100%;
+    height: 48px;
+    border-radius: var(--radius-md);
+    margin: var(--spacing-sm) 0;
+    border: none;
   }
   
   .main {

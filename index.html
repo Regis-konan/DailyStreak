@@ -310,26 +310,6 @@
                     <div class="setting-group">
                         <h3>
                             <svg viewBox="0 0 24 24" width="20" height="20">
-                                <path fill="currentColor" d="M10,21H14A2,2 0 0,1 12,23A2,2 0 0,1 10,21M21,19V20H3V19L5,17V11C5,7.9 7.03,5.17 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V17L21,19M17,11A5,5 0 0,0 12,6A5,5 0 0,0 7,11V18H17V11M19.75,3.19L18.33,4.61C20.04,6.3 21,8.6 21,11H23C23,8.07 21.84,5.25 19.75,3.19M1,11H3C3,8.6 3.96,6.3 5.67,4.61L4.25,3.19C2.16,5.25 1,8.07 1,11Z"/>
-                            </svg>
-                            Notifications
-                        </h3>
-                        <div class="setting">
-                            <label for="reminderTime">Rappel quotidien</label>
-                            <input type="time" id="reminderTime" value="18:00">
-                        </div>
-                        <div class="setting">
-                            <label for="notificationsToggle">Activer les notifications</label>
-                            <label class="switch">
-                                <input type="checkbox" id="notificationsToggle">
-                                <span class="slider"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="setting-group">
-                        <h3>
-                            <svg viewBox="0 0 24 24" width="20" height="20">
                                 <path fill="currentColor" d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
                             </svg>
                             Niveau
@@ -337,15 +317,15 @@
                         <div class="level-selector">
                             <button class="level-btn active" onclick="setLevel('beginner')">
                                 <span>Débutant</span>
-                                <small>4 exercices</small>
+                                <small>4 ex</small>
                             </button>
                             <button class="level-btn" onclick="setLevel('intermediate')">
-                                <span>Intermédiaire</span>
-                                <small>5 exercices</small>
+                                <span>Interméd.</span>
+                                <small>5 ex</small>
                             </button>
                             <button class="level-btn" onclick="setLevel('advanced')">
                                 <span>Avancé</span>
-                                <small>6 exercices</small>
+                                <small>6 ex</small>
                             </button>
                         </div>
                     </div>
@@ -376,16 +356,10 @@
                     <div class="setting-group">
                         <h3>
                             <svg viewBox="0 0 24 24" width="20" height="20">
-                                <path fill="currentColor" d="M12,16A3,3 0 0,1 9,13C9,11.88 9.61,10.9 10.5,10.39L10.5,10.39C10.21,9.97 10,9.5 10,9C10,7.34 11.34,6 13,6C14.66,6 16,7.34 16,9C16,9.5 15.79,9.97 15.5,10.39L15.5,10.39C16.39,10.9 17,11.88 17,13C17,14.66 15.66,16 14,16H12M6,22A2,2 0 0,1 4,20C4,19.62 4.1,19.27 4.29,18.97L6.11,15.81C7.69,17.17 9.75,18 12,18C14.25,18 16.31,17.17 17.89,15.81L19.71,18.97C19.9,19.27 20,19.62 20,20A2,2 0 0,1 18,22H6Z"/>
+                                <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
                             </svg>
-                            Données
+                            Réinitialiser
                         </h3>
-                        <button class="btn btn-secondary" onclick="exportData()">
-                            <svg viewBox="0 0 24 24" width="16" height="16">
-                                <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z"/>
-                            </svg>
-                            Exporter
-                        </button>
                         <button class="btn btn-danger" onclick="resetData()">
                             <svg viewBox="0 0 24 24" width="16" height="16">
                                 <path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/>
@@ -397,7 +371,7 @@
             </div>
         </main>
 
-        <!-- Navigation basse moderne -->
+        <!-- Bottom Navigation (Avec bouton central) -->
         <nav class="bottom-nav">
             <div class="bottom-nav-container">
                 <button class="nav-item active" onclick="switchScreen('home')">
@@ -408,6 +382,14 @@
                     </span>
                     <span class="nav-label">Accueil</span>
                 </button>
+                
+                <!-- Bouton central (Valider) -->
+                <button class="nav-center-btn" onclick="validateDay()" aria-label="Valider ma journée">
+                    <svg viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                    </svg>
+                </button>
+                
                 <button class="nav-item" onclick="switchScreen('stats')">
                     <span class="nav-icon-wrapper">
                         <svg class="nav-icon" viewBox="0 0 24 24" width="24" height="24">
@@ -416,6 +398,7 @@
                     </span>
                     <span class="nav-label">Stats</span>
                 </button>
+                
                 <button class="nav-item" onclick="switchScreen('settings')">
                     <span class="nav-icon-wrapper">
                         <svg class="nav-icon" viewBox="0 0 24 24" width="24" height="24">
