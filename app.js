@@ -1,6 +1,6 @@
 // ============================================
 // DAILYSTREAK - APPLICATION COMPLÈTE
-// Version 4.0.0 - Pro Design System
+// Version 5.0.0 - Bugs corrigés
 // ============================================
 
 // Données de l'application
@@ -11,7 +11,7 @@ let appData = {
     completedDays: 0,
     totalTime: 0,
     
-    today: new Date().toISOString().split('T')[0],
+    today: getLocalDateString(),
     todayCompleted: false,
     completedExercises: 0,
     
@@ -64,7 +64,7 @@ const exercisesConfig = {
     ]
 };
 
-// Configuration des succès (sans emojis)
+// Configuration des succès
 const achievementsConfig = [
     { id: 1, name: "Premier jour", desc: "Validez votre première journée", icon: "flag", unlocked: false },
     { id: 2, name: "3 jours de suite", desc: "3 jours consécutifs", icon: "streak", unlocked: false },
@@ -88,10 +88,21 @@ const achievementIcons = {
 let reminderNotificationId = null;
 
 // ============================================
+// UTILITAIRES DATES
+// ============================================
+
+function getLocalDateString(date = new Date()) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
+}
+
+// ============================================
 // INITIALISATION
 // ============================================
 
-// UNE SEULE initialisation !
 function initApp() {
     loadData();
     initUI();
@@ -109,7 +120,7 @@ function initUI() {
     updateDate();
     loadExercises();
     updateDisplay();
-    setTheme(appData.settings.theme);
+    setTheme(appData.settings.theme, false); // Pas de son au démarrage
     setupEventListeners();
 }
 
@@ -120,17 +131,15 @@ function initUI() {
 function loadData() {
     try {
         const saved = localStorage.getItem('dailyStreakData');
+        
         if (saved) {
             const data = JSON.parse(saved);
-            checkNewDay(data);
+            
+            // Charger d'abord les données sauvegardées
             appData = { ...appData, ...data };
             
-            if (appData.exercises && appData.exercises.length > 0) {
-                appData.exercises = appData.exercises.map(ex => ({
-                    ...ex,
-                    completed: ex.completed || false
-                }));
-            }
+            // Vérifier ensuite si un nouveau jour est arrivé
+            checkNewDay();
         } else {
             createDefaultData();
         }
@@ -146,44 +155,60 @@ function loadData() {
     if (!appData.achievements || appData.achievements.length === 0) {
         appData.achievements = JSON.parse(JSON.stringify(achievementsConfig));
     }
+    
+    saveData();
 }
 
-function checkNewDay(savedData) {
-    const today = new Date().toISOString().split('T')[0];
+function checkNewDay() {
+    const today = getLocalDateString();
     
-    if (savedData.today !== today) {
-        appData.today = today;
-        appData.todayCompleted = false;
-        appData.completedExercises = 0;
-        
-        if (appData.exercises && appData.exercises.length > 0) {
-            appData.exercises = appData.exercises.map(ex => ({
-                ...ex,
-                completed: false
-            }));
-        }
-        
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayStr = yesterday.toISOString().split('T')[0];
-        
-        if (savedData.calendar && savedData.calendar[yesterdayStr]) {
-            if (!savedData.calendar[yesterdayStr].completed) {
-                appData.streak = 0;
-                showToast('Streak interrompue. Recommencez aujourd\'hui', 'warning');
-            }
-        }
-        
-        if (appData.settings.notifications) {
-            showNewDayNotification();
-        }
-        
-        saveData();
+    // Même jour : rien à faire
+    if (appData.today === today) {
+        return;
     }
+    
+    const previousDate = appData.today;
+    
+    // Mettre à jour la date
+    appData.today = today;
+    
+    // Nouvelle journée
+    appData.todayCompleted = false;
+    appData.completedExercises = 0;
+    
+    // Réinitialiser les exercices du jour
+    const level = appData.settings.level;
+    appData.exercises = JSON.parse(JSON.stringify(exercisesConfig[level]));
+    
+    // Vérifier si le jour précédent avait été validé
+    if (previousDate && appData.calendar && appData.calendar[previousDate]) {
+        if (!appData.calendar[previousDate].completed) {
+            appData.streak = 0;
+            showToast('Streak interrompue. Recommencez aujourd\'hui', 'warning');
+        }
+    }
+    
+    // Préparer la journée actuelle dans le calendrier
+    if (!appData.calendar) {
+        appData.calendar = {};
+    }
+    
+    appData.calendar[today] = {
+        completed: false,
+        exercises: 0,
+        time: 0
+    };
+    
+    // Notification nouveau jour
+    if (appData.settings.notifications) {
+        showNewDayNotification();
+    }
+    
+    saveData();
 }
 
 function createDefaultData() {
-    const today = new Date().toISOString().split('T')[0];
+    const today = getLocalDateString();
     
     appData = {
         streak: 0,
@@ -225,7 +250,7 @@ function initCalendar() {
     for (let i = 30; i >= 0; i--) {
         const date = new Date(today);
         date.setDate(date.getDate() - i);
-        const dateStr = date.toISOString().split('T')[0];
+        const dateStr = getLocalDateString(date);
         calendar[dateStr] = { completed: false, exercises: 0, time: 0 };
     }
     
@@ -255,7 +280,11 @@ function updateDate() {
 
 function loadExercises() {
     const level = appData.settings.level;
-    appData.exercises = JSON.parse(JSON.stringify(exercisesConfig[level]));
+    
+    // Si aucun exercice n'existe ou si le niveau a changé, on les crée
+    if (!appData.exercises || appData.exercises.length === 0) {
+        appData.exercises = JSON.parse(JSON.stringify(exercisesConfig[level]));
+    }
     
     renderExercises();
 }
@@ -299,11 +328,8 @@ function toggleExercise(id) {
     const exercise = appData.exercises[exerciseIndex];
     exercise.completed = !exercise.completed;
     
-    if (exercise.completed) {
-        appData.completedExercises++;
-    } else {
-        appData.completedExercises--;
-    }
+    // Toujours recalculer le compteur
+    appData.completedExercises = appData.exercises.filter(ex => ex.completed).length;
     
     const exerciseElement = document.querySelector(`.exercise-item[data-id="${id}"]`);
     const checkbox = document.getElementById(`check${id}`);
@@ -370,7 +396,7 @@ function updateWeekChain() {
     for (let i = 6; i >= 0; i--) {
         const date = new Date(today);
         date.setDate(date.getDate() - i);
-        const dateStr = date.toISOString().split('T')[0];
+        const dateStr = getLocalDateString(date);
         const dayData = appData.calendar[dateStr];
         
         const dayElement = document.createElement('div');
@@ -404,7 +430,7 @@ function updateCalendar() {
     
     for (let day = 1; day <= lastDay.getDate(); day++) {
         const date = new Date(today.getFullYear(), today.getMonth(), day);
-        const dateStr = date.toISOString().split('T')[0];
+        const dateStr = getLocalDateString(date);
         const dayData = appData.calendar[dateStr];
         
         const dayElement = document.createElement('div');
@@ -538,7 +564,14 @@ function completeTired(type) {
             toggleExercise(appData.exercises[0].id);
         }
     } else if (type === 'squats') {
-        appData.completedExercises++;
+        const squats = appData.exercises.find(ex => ex.name.toLowerCase() === 'squats');
+        
+        if (squats && !squats.completed) {
+            squats.completed = true;
+        }
+        
+        appData.completedExercises = appData.exercises.filter(ex => ex.completed).length;
+        
         updateProgress();
         saveData();
     }
@@ -714,23 +747,34 @@ function switchScreen(screen) {
 // PARAMÈTRES
 // ============================================
 
-function setTheme(theme) {
-    playClickSound();
+function setTheme(theme, playSound = true) {
+    if (playSound) {
+        playClickSound();
+    }
+    
     appData.settings.theme = theme;
     document.documentElement.setAttribute('data-theme', theme);
     saveData();
-    showToast(`Thème ${theme === 'light' ? 'clair' : 'sombre'} activé`, 'success');
+    
+    if (playSound) {
+        showToast(`Thème ${theme === 'light' ? 'clair' : 'sombre'} activé`, 'success');
+    }
 }
 
 function setLevel(level) {
     playClickSound();
+    
     appData.settings.level = level;
     appData.currentLevel = level;
+    
+    // Nouveau niveau = nouvelle liste d'exercices
+    appData.exercises = JSON.parse(JSON.stringify(exercisesConfig[level]));
     
     appData.completedExercises = 0;
     appData.todayCompleted = false;
     
-    loadExercises();
+    updateProgress();
+    renderExercises();
     updateDisplay();
     saveData();
     
@@ -742,7 +786,7 @@ function exportData() {
     const dataStr = JSON.stringify(appData, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
     
-    const exportFileDefaultName = `daily-streak-backup-${new Date().toISOString().split('T')[0]}.json`;
+    const exportFileDefaultName = `daily-streak-backup-${getLocalDateString()}.json`;
     
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
