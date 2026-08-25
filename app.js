@@ -1,6 +1,6 @@
 // ============================================
 // DAILYSTREAK - APPLICATION COMPLÈTE
-// Version 3.0.0 - Accessibilité et notifications
+// Version 4.0.0 - Pro Design System
 // ============================================
 
 // Données de l'application
@@ -42,52 +42,59 @@ let appData = {
 // Configuration des exercices par niveau
 const exercisesConfig = {
     beginner: [
-        { id: 1, name: "Gainage", duration: "30 secondes", time: 30, icon: "🛏️", completed: false },
-        { id: 2, name: "Corde à sauter", duration: "1 minute", time: 60, icon: "🏃", completed: false },
-        { id: 3, name: "Pompes", duration: "5 répétitions", time: 45, icon: "💪", completed: false },
-        { id: 4, name: "Superman", duration: "30 secondes", time: 30, icon: "🦸", completed: false }
+        { id: 1, name: "Gainage", duration: "30 secondes", time: 30, completed: false },
+        { id: 2, name: "Corde à sauter", duration: "1 minute", time: 60, completed: false },
+        { id: 3, name: "Pompes", duration: "5 répétitions", time: 45, completed: false },
+        { id: 4, name: "Superman", duration: "30 secondes", time: 30, completed: false }
     ],
     intermediate: [
-        { id: 1, name: "Gainage", duration: "45 secondes", time: 45, icon: "🛏️", completed: false },
-        { id: 2, name: "Corde à sauter", duration: "2 minutes", time: 120, icon: "🏃", completed: false },
-        { id: 3, name: "Pompes", duration: "10 répétitions", time: 60, icon: "💪", completed: false },
-        { id: 4, name: "Superman", duration: "45 secondes", time: 45, icon: "🦸", completed: false },
-        { id: 5, name: "Squats", duration: "15 répétitions", time: 45, icon: "🦵", completed: false }
+        { id: 1, name: "Gainage", duration: "45 secondes", time: 45, completed: false },
+        { id: 2, name: "Corde à sauter", duration: "2 minutes", time: 120, completed: false },
+        { id: 3, name: "Pompes", duration: "10 répétitions", time: 60, completed: false },
+        { id: 4, name: "Superman", duration: "45 secondes", time: 45, completed: false },
+        { id: 5, name: "Squats", duration: "15 répétitions", time: 45, completed: false }
     ],
     advanced: [
-        { id: 1, name: "Gainage", duration: "1 minute", time: 60, icon: "🛏️", completed: false },
-        { id: 2, name: "Corde à sauter", duration: "3 minutes", time: 180, icon: "🏃", completed: false },
-        { id: 3, name: "Pompes", duration: "15 répétitions", time: 75, icon: "💪", completed: false },
-        { id: 4, name: "Superman", duration: "1 minute", time: 60, icon: "🦸", completed: false },
-        { id: 5, name: "Squats", duration: "20 répétitions", time: 60, icon: "🦵", completed: false },
-        { id: 6, name: "Burpees", duration: "10 répétitions", time: 90, icon: "⚡", completed: false }
+        { id: 1, name: "Gainage", duration: "1 minute", time: 60, completed: false },
+        { id: 2, name: "Corde à sauter", duration: "3 minutes", time: 180, completed: false },
+        { id: 3, name: "Pompes", duration: "15 répétitions", time: 75, completed: false },
+        { id: 4, name: "Superman", duration: "1 minute", time: 60, completed: false },
+        { id: 5, name: "Squats", duration: "20 répétitions", time: 60, completed: false },
+        { id: 6, name: "Burpees", duration: "10 répétitions", time: 90, completed: false }
     ]
 };
 
-// Configuration des succès
+// Configuration des succès (sans emojis)
 const achievementsConfig = [
-    { id: 1, name: "Premier jour", desc: "Valide ta première journée", icon: "🎯", unlocked: false },
-    { id: 2, name: "3 jours de suite", desc: "3 jours consécutifs", icon: "🔥", unlocked: false },
-    { id: 3, name: "Semaine complète", desc: "7 jours consécutifs", icon: "🏆", unlocked: false },
-    { id: 4, name: "Mois complet", desc: "30 jours consécutifs", icon: "🚀", unlocked: false },
-    { id: 5, name: "Mode réduit", desc: "Utilise le mode réduit", icon: "😴", unlocked: false },
-    { id: 6, name: "Journée parfaite", desc: "Tous les exercices faits", icon: "⭐", unlocked: false }
+    { id: 1, name: "Premier jour", desc: "Validez votre première journée", icon: "flag", unlocked: false },
+    { id: 2, name: "3 jours de suite", desc: "3 jours consécutifs", icon: "streak", unlocked: false },
+    { id: 3, name: "Semaine complète", desc: "7 jours consécutifs", icon: "trophy", unlocked: false },
+    { id: 4, name: "Mois complet", desc: "30 jours consécutifs", icon: "rocket", unlocked: false },
+    { id: 5, name: "Mode réduit", desc: "Utiliser le mode réduit", icon: "zap", unlocked: false },
+    { id: 6, name: "Journée parfaite", desc: "Tous les exercices faits", icon: "star", unlocked: false }
 ];
+
+// Icônes SVG pour les succès
+const achievementIcons = {
+    flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"/></svg>',
+    streak: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+    trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8M12 17v4M7 4h10v6a5 5 0 0 1-10 0V4z"/><path d="M17 5h3a1 1 0 0 1 1 1c0 2-1 4-4 4M7 5H4a1 1 0 0 0-1 1c0 2 1 4 4 4"/></svg>',
+    rocket: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zM12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2zM9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>',
+    zap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+    star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
+};
 
 // Notification ID pour le rappel quotidien
 let reminderNotificationId = null;
-let notificationCheckInterval = null;
 
 // ============================================
 // INITIALISATION
 // ============================================
 
-// Au chargement de la page
 window.addEventListener('DOMContentLoaded', () => {
     initApp();
 });
 
-// Initialiser l'application
 function initApp() {
     loadData();
     initUI();
@@ -96,19 +103,17 @@ function initApp() {
     setTimeout(() => {
         document.getElementById('loading').classList.add('hidden');
         document.getElementById('app').style.display = 'flex';
-        showToast('Bienvenue sur DailyStreak !', 'success');
+        showToast('Bienvenue sur DailyStreak', 'success');
         checkAndScheduleReminder();
     }, 1000);
 }
 
-// Initialiser l'interface
 function initUI() {
     updateDate();
     loadExercises();
     updateDisplay();
     setTheme(appData.settings.theme);
     setupEventListeners();
-    setupAccessibility();
 }
 
 // ============================================
@@ -168,7 +173,7 @@ function checkNewDay(savedData) {
         if (savedData.calendar && savedData.calendar[yesterdayStr]) {
             if (!savedData.calendar[yesterdayStr].completed) {
                 appData.streak = 0;
-                showToast('Streak cassée 😢 Recommence aujourd\'hui !', 'warning');
+                showToast('Streak interrompue. Recommencez aujourd\'hui', 'warning');
             }
         }
         
@@ -181,13 +186,15 @@ function checkNewDay(savedData) {
 }
 
 function createDefaultData() {
+    const today = new Date().toISOString().split('T')[0];
+    
     appData = {
         streak: 0,
         bestStreak: 0,
         totalDays: 0,
         completedDays: 0,
         totalTime: 0,
-        today: new Date().toISOString().split('T')[0],
+        today: today,
         todayCompleted: false,
         completedExercises: 0,
         exercises: JSON.parse(JSON.stringify(exercisesConfig.beginner)),
@@ -233,7 +240,6 @@ function saveData() {
         localStorage.setItem('dailyStreakData', JSON.stringify(appData));
     } catch (error) {
         console.error('Erreur de sauvegarde:', error);
-        showToast('Erreur de sauvegarde', 'error');
     }
 }
 
@@ -254,13 +260,6 @@ function loadExercises() {
     const level = appData.settings.level;
     appData.exercises = JSON.parse(JSON.stringify(exercisesConfig[level]));
     
-    if (appData.exercises && appData.exercises.length > 0) {
-        appData.exercises = appData.exercises.map(ex => ({
-            ...ex,
-            completed: ex.completed || false
-        }));
-    }
-    
     renderExercises();
 }
 
@@ -274,17 +273,19 @@ function renderExercises() {
         exerciseElement.dataset.id = exercise.id;
         
         exerciseElement.innerHTML = `
-            <div class="exercise-content" onclick="toggleExercise(${exercise.id})" role="button" tabindex="0" aria-label="${exercise.name} - ${exercise.duration} - ${exercise.completed ? 'Terminé' : 'À faire'}">
-                <div class="exercise-checkbox" id="check${exercise.id}" aria-hidden="true">
-                    ${exercise.completed ? '✓' : ''}
+            <div class="exercise-content" onclick="toggleExercise(${exercise.id})" role="button" tabindex="0">
+                <div class="exercise-checkbox" id="check${exercise.id}">
+                    ${exercise.completed ? '<svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>' : ''}
                 </div>
                 <div>
-                    <div class="exercise-name">${exercise.icon} ${exercise.name}</div>
+                    <div class="exercise-name">${exercise.name}</div>
                     <div class="exercise-duration">${exercise.duration}</div>
                 </div>
             </div>
-            <button class="exercise-timer" onclick="startExerciseTimer(${exercise.id})" aria-label="Démarrer le timer pour ${exercise.name}">
-                ⏱️
+            <button class="exercise-timer" onclick="startExerciseTimer(${exercise.id})">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="currentColor" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/>
+                </svg>
             </button>
         `;
         
@@ -312,7 +313,9 @@ function toggleExercise(id) {
     
     if (exerciseElement && checkbox) {
         exerciseElement.classList.toggle('completed', exercise.completed);
-        checkbox.textContent = exercise.completed ? '✓' : '';
+        checkbox.innerHTML = exercise.completed 
+            ? '<svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>'
+            : '';
         
         if (exercise.completed) {
             exerciseElement.style.transform = 'scale(1.02)';
@@ -341,11 +344,9 @@ function updateProgress() {
     if (appData.completedExercises > 0 && !appData.todayCompleted) {
         validateBtn.disabled = false;
         validateBtn.style.opacity = '1';
-        validateBtn.setAttribute('aria-label', `Valider ma journée (${appData.completedExercises}/${total} exercices terminés)`);
     } else {
         validateBtn.disabled = true;
         validateBtn.style.opacity = '0.5';
-        validateBtn.setAttribute('aria-label', 'Valider ma journée (non disponible)');
     }
 }
 
@@ -377,11 +378,9 @@ function updateWeekChain() {
         
         const dayElement = document.createElement('div');
         dayElement.className = 'day-circle';
-        dayElement.setAttribute('aria-label', `${date.getDate()} - ${dayData && dayData.completed ? 'Terminé' : 'Non terminé'}`);
         
         if (i === 0) {
             dayElement.classList.add('today');
-            dayElement.setAttribute('aria-label', `${date.getDate()} - Aujourd'hui`);
         } else if (dayData && dayData.completed) {
             dayElement.classList.add('done');
         }
@@ -414,11 +413,9 @@ function updateCalendar() {
         const dayElement = document.createElement('div');
         dayElement.className = 'calendar-day';
         dayElement.textContent = day;
-        dayElement.setAttribute('aria-label', `${day} - ${dayData && dayData.completed ? 'Terminé' : 'Non terminé'}`);
         
         if (day === today.getDate() && today.getMonth() === new Date().getMonth()) {
             dayElement.classList.add('today');
-            dayElement.setAttribute('aria-label', `${day} - Aujourd'hui`);
         } else if (dayData && dayData.completed) {
             dayElement.classList.add('done');
         }
@@ -436,10 +433,9 @@ function updateAchievements() {
     appData.achievements.forEach(achievement => {
         const achievementElement = document.createElement('div');
         achievementElement.className = `achievement ${achievement.unlocked ? '' : 'locked'}`;
-        achievementElement.setAttribute('aria-label', `${achievement.name} - ${achievement.desc} - ${achievement.unlocked ? 'Débloqué' : 'Verrouillé'}`);
         
         achievementElement.innerHTML = `
-            <div class="achievement-icon">${achievement.icon}</div>
+            <div class="achievement-icon">${achievementIcons[achievement.icon] || achievementIcons.flag}</div>
             <div class="achievement-name">${achievement.name}</div>
             <div class="achievement-desc">${achievement.desc}</div>
         `;
@@ -454,18 +450,15 @@ function updateSettings() {
     
     if (reminderTime) {
         reminderTime.value = appData.settings.reminderTime;
-        reminderTime.setAttribute('aria-label', 'Heure de rappel quotidien');
     }
     
     if (notificationsToggle) {
         notificationsToggle.checked = appData.settings.notifications;
-        notificationsToggle.setAttribute('aria-label', 'Activer/désactiver les notifications');
     }
     
     document.querySelectorAll('.level-btn').forEach(btn => {
         btn.classList.remove('active');
-        const level = btn.querySelector('span').textContent.toLowerCase();
-        if (level.includes(appData.settings.level)) {
+        if (btn.querySelector('span').textContent.toLowerCase().includes(appData.settings.level)) {
             btn.classList.add('active');
         }
     });
@@ -485,12 +478,12 @@ function updateSettings() {
 
 function validateDay() {
     if (appData.todayCompleted) {
-        showToast('Journée déjà validée !', 'info');
+        showToast('Journée déjà validée', 'info');
         return;
     }
     
     if (appData.completedExercises === 0) {
-        showToast('Fais au moins un exercice !', 'error');
+        showToast('Faites au moins un exercice', 'error');
         return;
     }
     
@@ -514,7 +507,7 @@ function validateDay() {
         time: totalTime
     };
     
-    showToast(`🔥 Nouvelle streak : ${appData.streak} jours !`, 'success');
+    showToast(`Nouvelle streak : ${appData.streak} jours`, 'success');
     playSuccessSound();
     vibrate([100, 50, 100]);
     
@@ -527,7 +520,7 @@ function validateDay() {
     const validateBtn = document.getElementById('validateBtn');
     validateBtn.disabled = true;
     validateBtn.style.opacity = '0.5';
-    validateBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg><span>Journée validée !</span>';
+    validateBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg><span>Journée validée</span>';
     
     updateDisplay();
     saveData();
@@ -536,11 +529,8 @@ function validateDay() {
 
 function toggleTiredMode() {
     const tiredCard = document.getElementById('tiredCard');
-    const isHidden = tiredCard.classList.toggle('hidden');
+    tiredCard.classList.toggle('hidden');
     playClickSound();
-    
-    const tiredBtn = document.getElementById('tiredModeBtn');
-    tiredBtn.setAttribute('aria-label', isHidden ? 'Afficher le mode réduit' : 'Cacher le mode réduit');
 }
 
 function completeTired(type) {
@@ -559,11 +549,11 @@ function completeTired(type) {
     const tiredAchievement = appData.achievements.find(a => a.id === 5);
     if (tiredAchievement && !tiredAchievement.unlocked) {
         tiredAchievement.unlocked = true;
-        showToast('Succès débloqué : Mode réduit !', 'success');
+        showToast('Succès débloqué : Mode réduit', 'success');
     }
     
     toggleTiredMode();
-    showToast('Exercice rapide ajouté !', 'success');
+    showToast('Exercice rapide ajouté', 'success');
 }
 
 // ============================================
@@ -599,7 +589,7 @@ function startTimer() {
         if (appData.timer.seconds >= appData.timer.totalSeconds) {
             clearInterval(appData.timer.interval);
             appData.timer.running = false;
-            showToast(`⏱️ ${appData.timer.exercise} terminé !`, 'success');
+            showToast(`${appData.timer.exercise} terminé`, 'success');
             playSuccessSound();
             vibrate([200, 100, 200]);
             
@@ -687,7 +677,7 @@ function checkAchievements() {
     }
     
     if (newAchievements) {
-        showToast('Nouveau succès débloqué !', 'success');
+        showToast('Nouveau succès débloqué', 'success');
         updateAchievements();
         saveData();
     }
@@ -700,7 +690,7 @@ function checkAchievements() {
 function switchScreen(screen) {
     playClickSound();
     
-    document.querySelectorAll('.nav-btn').forEach(btn => {
+    document.querySelectorAll('.nav-item').forEach(btn => {
         btn.classList.remove('active');
     });
     
@@ -713,7 +703,7 @@ function switchScreen(screen) {
         screenElement.classList.add('active');
     }
     
-    const navBtn = document.querySelector(`.nav-btn[onclick*="${screen}"]`);
+    const navBtn = document.querySelector(`.nav-item[onclick*="${screen}"]`);
     if (navBtn) {
         navBtn.classList.add('active');
     }
@@ -767,8 +757,8 @@ function exportData() {
 
 function resetData() {
     playClickSound();
-    if (confirm('⚠️ Es-tu sûr de vouloir tout réinitialiser ?')) {
-        if (confirm('⚠️ Dernière chance ! Toutes tes données seront effacées.')) {
+    if (confirm('Êtes-vous sûr de vouloir tout réinitialiser ?')) {
+        if (confirm('Dernière chance ! Toutes vos données seront effacées.')) {
             cancelDailyReminder();
             localStorage.clear();
             createDefaultData();
@@ -781,17 +771,15 @@ function resetData() {
 }
 
 // ============================================
-// NOTIFICATIONS - CORRECTIONS
+// NOTIFICATIONS
 // ============================================
 
 function checkAndScheduleReminder() {
     if (!appData.settings.notifications) return;
     
-    // Vérifier la permission et programmer le rappel
     if (Notification.permission === 'granted') {
         scheduleDailyReminder();
     } else if (Notification.permission === 'default') {
-        // Demander la permission automatiquement
         requestNotificationPermission();
     }
 }
@@ -804,7 +792,7 @@ function requestNotificationPermission() {
     
     Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
-            showToast('Notifications activées !', 'success');
+            showToast('Notifications activées', 'success');
             scheduleDailyReminder();
         } else if (permission === 'denied') {
             showToast('Notifications refusées. Activez-les dans les paramètres.', 'warning');
@@ -825,23 +813,18 @@ function scheduleDailyReminder() {
     
     reminderTime.setHours(hours, minutes, 0, 0);
     
-    // Si l'heure est passée, programmer pour demain
     if (reminderTime < now) {
         reminderTime.setDate(reminderTime.getDate() + 1);
     }
     
     const timeUntilReminder = reminderTime.getTime() - now.getTime();
     
-    // Programmer avec un timeout
     reminderNotificationId = setTimeout(() => {
         if (!appData.todayCompleted) {
             showReminderNotification();
         }
-        // Re-programmer pour le jour suivant
         scheduleDailyReminder();
     }, timeUntilReminder);
-    
-    console.log('📅 Rappel programmé à:', reminderTime.toLocaleTimeString());
 }
 
 function cancelDailyReminder() {
@@ -857,7 +840,7 @@ function showReminderNotification() {
     }
     
     const options = {
-        body: 'N\'oublie pas ta routine sportive aujourd\'hui ! Ne romps pas la chaîne 💪',
+        body: 'N\'oubliez pas votre routine sportive aujourd\'hui ! Ne romps pas la chaîne.',
         icon: './icons/icon-192.png',
         badge: './icons/icon-192.png',
         tag: 'daily-reminder',
@@ -870,7 +853,7 @@ function showReminderNotification() {
         ]
     };
     
-    const notification = new Notification('🔥 DailyStreak - Rappel quotidien', options);
+    const notification = new Notification('DailyStreak - Rappel quotidien', options);
     
     notification.onclick = function(event) {
         event.preventDefault();
@@ -878,7 +861,6 @@ function showReminderNotification() {
         notification.close();
     };
     
-    // Vérifier si l'API d'actions est supportée
     if ('actions' in Notification.prototype) {
         notification.onaction = function(event) {
             if (event.action === 'open') {
@@ -887,7 +869,6 @@ function showReminderNotification() {
         };
     }
     
-    // Fermer après 10 secondes
     setTimeout(() => {
         notification.close();
     }, 10000);
@@ -898,8 +879,8 @@ function showNewDayNotification() {
         return;
     }
     
-    const notification = new Notification('🌟 Nouveau jour !', {
-        body: `Streak actuelle : ${appData.streak} jours. Fais ta routine aujourd'hui !`,
+    const notification = new Notification('Nouveau jour !', {
+        body: `Streak actuelle : ${appData.streak} jours. Faites votre routine aujourd'hui !`,
         icon: './icons/icon-192.png',
         badge: './icons/icon-192.png',
         tag: 'new-day',
@@ -917,112 +898,6 @@ function showNewDayNotification() {
 }
 
 // ============================================
-// ACCESSIBILITÉ
-// ============================================
-
-function setupAccessibility() {
-    // Mettre à jour les labels ARIA dynamiquement
-    setInterval(updateAriaLabels, 1000);
-    
-    // Gestion du clavier
-    document.addEventListener('keydown', handleKeyboardNavigation);
-    
-    // Initialiser les labels
-    updateAriaLabels();
-}
-
-function updateAriaLabels() {
-    // Boutons du timer
-    const timerButtons = document.querySelectorAll('.timer-btn');
-    if (timerButtons.length >= 3) {
-        timerButtons[0].setAttribute('aria-label', 'Démarrer le timer');
-        timerButtons[1].setAttribute('aria-label', 'Mettre en pause le timer');
-        timerButtons[2].setAttribute('aria-label', 'Réinitialiser le timer');
-    }
-    
-    // Boutons de navigation
-    const navButtons = document.querySelectorAll('.nav-btn');
-    navButtons.forEach((btn, index) => {
-        const labels = ['Accueil', 'Statistiques', 'Paramètres'];
-        if (!btn.hasAttribute('aria-label')) {
-            btn.setAttribute('aria-label', labels[index] || 'Navigation');
-        }
-    });
-    
-    // Boutons de retour
-    const backButtons = document.querySelectorAll('.icon-btn[onclick*="home"]');
-    backButtons.forEach(btn => {
-        if (!btn.hasAttribute('aria-label')) {
-            btn.setAttribute('aria-label', 'Retour à l\'accueil');
-        }
-    });
-    
-    // Bouton de stats
-    const statsBtn = document.querySelector('.stats-btn');
-    if (statsBtn && !statsBtn.hasAttribute('aria-label')) {
-        statsBtn.setAttribute('aria-label', 'Voir les statistiques');
-    }
-    
-    // Bouton de validation
-    const validateBtn = document.getElementById('validateBtn');
-    if (validateBtn) {
-        const completed = appData.completedExercises || 0;
-        const total = appData.exercises?.length || 4;
-        const label = appData.todayCompleted 
-            ? 'Journée déjà validée' 
-            : `Valider ma journée (${completed}/${total} exercices terminés)`;
-        validateBtn.setAttribute('aria-label', label);
-    }
-}
-
-function handleKeyboardNavigation(e) {
-    // Échap pour fermer les modales
-    if (e.key === 'Escape') {
-        const timerCard = document.getElementById('timerCard');
-        if (!timerCard.classList.contains('hidden')) {
-            hideTimer();
-        }
-        
-        const tiredCard = document.getElementById('tiredCard');
-        if (!tiredCard.classList.contains('hidden')) {
-            toggleTiredMode();
-        }
-    }
-    
-    // Touches numériques pour les exercices
-    if (e.key >= '1' && e.key <= '6') {
-        const exerciseIndex = parseInt(e.key) - 1;
-        if (appData.exercises[exerciseIndex]) {
-            toggleExercise(appData.exercises[exerciseIndex].id);
-        }
-    }
-    
-    // Raccourcis de navigation
-    if (e.altKey) {
-        switch(e.key) {
-            case '1': switchScreen('home'); break;
-            case '2': switchScreen('stats'); break;
-            case '3': switchScreen('settings'); break;
-            case 'v': 
-                if (!document.getElementById('validateBtn').disabled) {
-                    validateDay();
-                }
-                break;
-            case 't': toggleTiredMode(); break;
-        }
-    }
-    
-    // Espace pour valider
-    if (e.key === ' ' && !e.target.closest('input, textarea, button')) {
-        e.preventDefault();
-        const validateBtn = document.getElementById('validateBtn');
-        if (!validateBtn.disabled) {
-            validateDay();
-        }
-    }
-}
-
-// ============================================
 // UTILITAIRES
 // ============================================
 
@@ -1032,23 +907,17 @@ function showToast(message, type = 'info') {
     
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
-    toast.setAttribute('role', 'alert');
-    toast.setAttribute('aria-live', 'polite');
-    toast.setAttribute('aria-atomic', 'true');
     
     const icons = {
-        success: '✅',
-        error: '❌',
-        warning: '⚠️',
-        info: 'ℹ️'
+        success: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>',
+        error: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>',
+        warning: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M13,14H11V9H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg>',
+        info: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M11,9H13V7H11M12,20C16.42,20 20,16.42 20,12C20,7.58 16.42,4 12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20M12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22M11,15H13V11H11V15Z"/></svg>'
     };
     
     toast.innerHTML = `
         <div class="toast-icon">${icons[type] || icons.info}</div>
-        <div class="toast-content">
-            <div class="toast-title">${type.charAt(0).toUpperCase() + type.slice(1)}</div>
-            <div class="toast-message">${message}</div>
-        </div>
+        <div class="toast-message">${message}</div>
     `;
     
     container.appendChild(toast);
@@ -1120,11 +989,10 @@ function vibrate(pattern) {
 }
 
 // ============================================
-// ÉVÉNEMENTS ET SERVICE WORKER
+// ÉVÉNEMENTS
 // ============================================
 
 function setupEventListeners() {
-    // Gestion en ligne/hors ligne
     window.addEventListener('online', () => {
         showToast('Connexion rétablie', 'success');
     });
@@ -1133,13 +1001,11 @@ function setupEventListeners() {
         showToast('Mode hors ligne', 'warning');
     });
     
-    // Sauvegarde avant fermeture
     window.addEventListener('beforeunload', () => {
         saveData();
         cancelDailyReminder();
     });
     
-    // Paramètres de notification
     const reminderTime = document.getElementById('reminderTime');
     const notificationsToggle = document.getElementById('notificationsToggle');
     
@@ -1176,21 +1042,17 @@ function setupServiceWorker() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js')
             .then(registration => {
-                console.log('✅ Service Worker enregistré avec succès');
-                
-                // Vérifier l'état
-                if (registration.installing) {
-                    console.log('SW installing');
-                } else if (registration.waiting) {
-                    console.log('SW waiting');
-                } else if (registration.active) {
-                    console.log('SW active');
-                }
+                console.log('Service Worker enregistré avec succès');
             })
             .catch(error => {
-                console.error('❌ Erreur SW:', error);
+                console.error('Erreur SW:', error);
             });
-    } else {
-        console.log('❌ Service Worker non supporté');
     }
 }
+
+// ============================================
+// INITIALISATION
+// ============================================
+
+// Lancement de l'application
+initApp();
