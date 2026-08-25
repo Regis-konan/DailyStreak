@@ -1051,8 +1051,12 @@ function setupServiceWorker() {
 }
 
 // ============================================
-// INITIALISATION
+// LANCEMENT DE L'APPLICATION
 // ============================================
 
-// Lancement de l'application
-initApp();
+// Initialisation immédiate
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
