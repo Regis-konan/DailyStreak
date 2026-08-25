@@ -1,6 +1,6 @@
 // ============================================
 // DAILYSTREAK - APPLICATION COMPLÈTE
-// Version 5.0.0 - Bugs corrigés
+// Version 5.1.0 - Tous les bugs corrigés
 // ============================================
 
 // Données de l'application
@@ -71,7 +71,7 @@ const achievementsConfig = [
     { id: 3, name: "Semaine complète", desc: "7 jours consécutifs", icon: "trophy", unlocked: false },
     { id: 4, name: "Mois complet", desc: "30 jours consécutifs", icon: "rocket", unlocked: false },
     { id: 5, name: "Mode réduit", desc: "Utiliser le mode réduit", icon: "zap", unlocked: false },
-    { id: 6, name: "Journée parfaite", desc: "Tous les exercices faits", icon: "star", unlocked: false }
+    { id: 6, name: "Journée parfaite", desc: "Tous les exercices faits et journée validée", icon: "star", unlocked: false }
 ];
 
 // Icônes SVG pour les succès
@@ -180,9 +180,15 @@ function checkNewDay() {
     const level = appData.settings.level;
     appData.exercises = JSON.parse(JSON.stringify(exercisesConfig[level]));
     
-    // Vérifier si le jour précédent avait été validé
-    if (previousDate && appData.calendar && appData.calendar[previousDate]) {
-        if (!appData.calendar[previousDate].completed) {
+    // Vérifier que le jour immédiatement précédent était validé
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    const yesterdayStr = getLocalDateString(yesterday);
+    const yesterdayData = appData.calendar?.[yesterdayStr];
+    
+    if (!yesterdayData || !yesterdayData.completed) {
+        if (appData.streak > 0) {
             appData.streak = 0;
             showToast('Streak interrompue. Recommencez aujourd\'hui', 'warning');
         }
@@ -322,6 +328,12 @@ function renderExercises() {
 }
 
 function toggleExercise(id) {
+    // 🔒 Verrouiller après validation
+    if (appData.todayCompleted) {
+        showToast('Journée déjà validée', 'info');
+        return;
+    }
+    
     const exerciseIndex = appData.exercises.findIndex(ex => ex.id === id);
     if (exerciseIndex === -1) return;
     
@@ -557,23 +569,33 @@ function toggleTiredMode() {
 }
 
 function completeTired(type) {
+    // 🔒 Verrouiller après validation
+    if (appData.todayCompleted) {
+        showToast('Journée déjà validée', 'info');
+        return;
+    }
+    
     playClickSound();
     
+    let exerciseAdded = false;
+    
     if (type === 'plank') {
-        if (appData.exercises[0]) {
-            toggleExercise(appData.exercises[0].id);
+        const exercise = appData.exercises[0];
+        
+        if (exercise && !exercise.completed) {
+            toggleExercise(exercise.id);
+            exerciseAdded = true;
         }
     } else if (type === 'squats') {
         const squats = appData.exercises.find(ex => ex.name.toLowerCase() === 'squats');
         
         if (squats && !squats.completed) {
             squats.completed = true;
+            appData.completedExercises = appData.exercises.filter(ex => ex.completed).length;
+            updateProgress();
+            saveData();
+            exerciseAdded = true;
         }
-        
-        appData.completedExercises = appData.exercises.filter(ex => ex.completed).length;
-        
-        updateProgress();
-        saveData();
     }
     
     const tiredAchievement = appData.achievements.find(a => a.id === 5);
@@ -583,7 +605,10 @@ function completeTired(type) {
     }
     
     toggleTiredMode();
-    showToast('Exercice rapide ajouté', 'success');
+    
+    if (exerciseAdded) {
+        showToast('Exercice rapide ajouté', 'success');
+    }
 }
 
 // ============================================
@@ -591,10 +616,22 @@ function completeTired(type) {
 // ============================================
 
 function startExerciseTimer(exerciseId) {
+    // 🔒 Verrouiller après validation
+    if (appData.todayCompleted) {
+        showToast('Journée déjà validée', 'info');
+        return;
+    }
+    
     const exercise = appData.exercises.find(ex => ex.id === exerciseId);
     if (!exercise) return;
     
     playClickSound();
+    
+    // ⛔ Stopper un éventuel timer précédent
+    if (appData.timer.running) {
+        clearInterval(appData.timer.interval);
+        appData.timer.running = false;
+    }
     
     const timerCard = document.getElementById('timerCard');
     timerCard.classList.remove('hidden');
@@ -698,7 +735,8 @@ function checkAchievements() {
         }
     }
     
-    if (appData.completedExercises === appData.exercises.length) {
+    // 🔒 Succès "Journée parfaite" seulement si la journée est validée
+    if (appData.todayCompleted && appData.completedExercises === appData.exercises.length) {
         const achievement = appData.achievements.find(a => a.id === 6);
         if (achievement && !achievement.unlocked) {
             achievement.unlocked = true;
@@ -771,7 +809,8 @@ function setLevel(level) {
     appData.exercises = JSON.parse(JSON.stringify(exercisesConfig[level]));
     
     appData.completedExercises = 0;
-    appData.todayCompleted = false;
+    // ⚠️ Ne PAS remettre todayCompleted = false !
+    // On conserve l'état de validation de la journée
     
     updateProgress();
     renderExercises();
@@ -801,7 +840,8 @@ function resetData() {
     if (confirm('Êtes-vous sûr de vouloir tout réinitialiser ?')) {
         if (confirm('Dernière chance ! Toutes vos données seront effacées.')) {
             cancelDailyReminder();
-            localStorage.clear();
+            // ⚠️ Remplacer localStorage.clear() par removeItem()
+            localStorage.removeItem('dailyStreakData');
             createDefaultData();
             loadExercises();
             updateDisplay();
